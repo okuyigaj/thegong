@@ -1,0 +1,345 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		C9E3A18715309B12001F9483 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9E3A18615309B12001F9483 /* UIKit.framework */; };
+		C9E3A18915309B12001F9483 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9E3A18815309B12001F9483 /* Foundation.framework */; };
+		C9E3A18B15309B12001F9483 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9E3A18A15309B12001F9483 /* CoreGraphics.framework */; };
+		C9E3A19115309B12001F9483 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C9E3A18F15309B12001F9483 /* InfoPlist.strings */; };
+		C9E3A19315309B12001F9483 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E3A19215309B12001F9483 /* main.m */; };
+		C9E3A19715309B12001F9483 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E3A19615309B12001F9483 /* AppDelegate.m */; };
+		C9E3A19A15309B12001F9483 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C9E3A19815309B12001F9483 /* MainStoryboard.storyboard */; };
+		C9E3A1A515309D5F001F9483 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E3A1A415309D5F001F9483 /* MainViewController.m */; };
+		C9E3A1AB15309EB0001F9483 /* LoginRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E3A1AA15309EB0001F9483 /* LoginRegisterViewController.m */; };
+		C9E3A1AF1530A02B001F9483 /* FriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E3A1AE1530A02B001F9483 /* FriendsViewController.m */; };
+		C9E3A1B31530A389001F9483 /* ConfirmRegistrationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E3A1B21530A389001F9483 /* ConfirmRegistrationViewController.m */; };
+		C9E3A1B71530A771001F9483 /* AddFriendViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E3A1B61530A771001F9483 /* AddFriendViewController.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		C9E3A18215309B12001F9483 /* gong.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = gong.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C9E3A18615309B12001F9483 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		C9E3A18815309B12001F9483 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		C9E3A18A15309B12001F9483 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		C9E3A18E15309B12001F9483 /* gong-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "gong-Info.plist"; sourceTree = "<group>"; };
+		C9E3A19015309B12001F9483 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		C9E3A19215309B12001F9483 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		C9E3A19415309B12001F9483 /* gong-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "gong-Prefix.pch"; sourceTree = "<group>"; };
+		C9E3A19515309B12001F9483 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		C9E3A19615309B12001F9483 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		C9E3A19915309B12001F9483 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
+		C9E3A1A315309D5F001F9483 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
+		C9E3A1A415309D5F001F9483 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
+		C9E3A1A915309EB0001F9483 /* LoginRegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginRegisterViewController.h; sourceTree = "<group>"; };
+		C9E3A1AA15309EB0001F9483 /* LoginRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginRegisterViewController.m; sourceTree = "<group>"; };
+		C9E3A1AD1530A02B001F9483 /* FriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendsViewController.h; sourceTree = "<group>"; };
+		C9E3A1AE1530A02B001F9483 /* FriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendsViewController.m; sourceTree = "<group>"; };
+		C9E3A1B11530A389001F9483 /* ConfirmRegistrationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfirmRegistrationViewController.h; sourceTree = "<group>"; };
+		C9E3A1B21530A389001F9483 /* ConfirmRegistrationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfirmRegistrationViewController.m; sourceTree = "<group>"; };
+		C9E3A1B51530A771001F9483 /* AddFriendViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddFriendViewController.h; sourceTree = "<group>"; };
+		C9E3A1B61530A771001F9483 /* AddFriendViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddFriendViewController.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C9E3A17F15309B12001F9483 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C9E3A18715309B12001F9483 /* UIKit.framework in Frameworks */,
+				C9E3A18915309B12001F9483 /* Foundation.framework in Frameworks */,
+				C9E3A18B15309B12001F9483 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		C9E3A17715309B12001F9483 = {
+			isa = PBXGroup;
+			children = (
+				C9E3A18C15309B12001F9483 /* gong */,
+				C9E3A18515309B12001F9483 /* Frameworks */,
+				C9E3A18315309B12001F9483 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		C9E3A18315309B12001F9483 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C9E3A18215309B12001F9483 /* gong.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C9E3A18515309B12001F9483 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C9E3A18615309B12001F9483 /* UIKit.framework */,
+				C9E3A18815309B12001F9483 /* Foundation.framework */,
+				C9E3A18A15309B12001F9483 /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C9E3A18C15309B12001F9483 /* gong */ = {
+			isa = PBXGroup;
+			children = (
+				C9E3A1B41530A752001F9483 /* AddFriendViewController */,
+				C9E3A1B01530A36E001F9483 /* ConfirmRegistrationViewController */,
+				C9E3A1AC1530A015001F9483 /* FriendsViewController */,
+				C9E3A1A815309E87001F9483 /* LoginRegisterViewController */,
+				C9E3A1A615309D6E001F9483 /* MainViewController */,
+				C9E3A19515309B12001F9483 /* AppDelegate.h */,
+				C9E3A19615309B12001F9483 /* AppDelegate.m */,
+				C9E3A19815309B12001F9483 /* MainStoryboard.storyboard */,
+				C9E3A18D15309B12001F9483 /* Supporting Files */,
+			);
+			path = gong;
+			sourceTree = "<group>";
+		};
+		C9E3A18D15309B12001F9483 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				C9E3A18E15309B12001F9483 /* gong-Info.plist */,
+				C9E3A18F15309B12001F9483 /* InfoPlist.strings */,
+				C9E3A19215309B12001F9483 /* main.m */,
+				C9E3A19415309B12001F9483 /* gong-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		C9E3A1A615309D6E001F9483 /* MainViewController */ = {
+			isa = PBXGroup;
+			children = (
+				C9E3A1A315309D5F001F9483 /* MainViewController.h */,
+				C9E3A1A415309D5F001F9483 /* MainViewController.m */,
+			);
+			name = MainViewController;
+			sourceTree = "<group>";
+		};
+		C9E3A1A815309E87001F9483 /* LoginRegisterViewController */ = {
+			isa = PBXGroup;
+			children = (
+				C9E3A1A915309EB0001F9483 /* LoginRegisterViewController.h */,
+				C9E3A1AA15309EB0001F9483 /* LoginRegisterViewController.m */,
+			);
+			name = LoginRegisterViewController;
+			sourceTree = "<group>";
+		};
+		C9E3A1AC1530A015001F9483 /* FriendsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				C9E3A1AD1530A02B001F9483 /* FriendsViewController.h */,
+				C9E3A1AE1530A02B001F9483 /* FriendsViewController.m */,
+			);
+			name = FriendsViewController;
+			sourceTree = "<group>";
+		};
+		C9E3A1B01530A36E001F9483 /* ConfirmRegistrationViewController */ = {
+			isa = PBXGroup;
+			children = (
+				C9E3A1B11530A389001F9483 /* ConfirmRegistrationViewController.h */,
+				C9E3A1B21530A389001F9483 /* ConfirmRegistrationViewController.m */,
+			);
+			name = ConfirmRegistrationViewController;
+			sourceTree = "<group>";
+		};
+		C9E3A1B41530A752001F9483 /* AddFriendViewController */ = {
+			isa = PBXGroup;
+			children = (
+				C9E3A1B51530A771001F9483 /* AddFriendViewController.h */,
+				C9E3A1B61530A771001F9483 /* AddFriendViewController.m */,
+			);
+			name = AddFriendViewController;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		C9E3A18115309B12001F9483 /* gong */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C9E3A1A015309B12001F9483 /* Build configuration list for PBXNativeTarget "gong" */;
+			buildPhases = (
+				C9E3A17E15309B12001F9483 /* Sources */,
+				C9E3A17F15309B12001F9483 /* Frameworks */,
+				C9E3A18015309B12001F9483 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = gong;
+			productName = gong;
+			productReference = C9E3A18215309B12001F9483 /* gong.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C9E3A17915309B12001F9483 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
+			buildConfigurationList = C9E3A17C15309B12001F9483 /* Build configuration list for PBXProject "gong" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = C9E3A17715309B12001F9483;
+			productRefGroup = C9E3A18315309B12001F9483 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C9E3A18115309B12001F9483 /* gong */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		C9E3A18015309B12001F9483 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C9E3A19115309B12001F9483 /* InfoPlist.strings in Resources */,
+				C9E3A19A15309B12001F9483 /* MainStoryboard.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C9E3A17E15309B12001F9483 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C9E3A19315309B12001F9483 /* main.m in Sources */,
+				C9E3A19715309B12001F9483 /* AppDelegate.m in Sources */,
+				C9E3A1A515309D5F001F9483 /* MainViewController.m in Sources */,
+				C9E3A1AB15309EB0001F9483 /* LoginRegisterViewController.m in Sources */,
+				C9E3A1AF1530A02B001F9483 /* FriendsViewController.m in Sources */,
+				C9E3A1B31530A389001F9483 /* ConfirmRegistrationViewController.m in Sources */,
+				C9E3A1B71530A771001F9483 /* AddFriendViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		C9E3A18F15309B12001F9483 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C9E3A19015309B12001F9483 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		C9E3A19815309B12001F9483 /* MainStoryboard.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C9E3A19915309B12001F9483 /* en */,
+			);
+			name = MainStoryboard.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		C9E3A19E15309B12001F9483 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		C9E3A19F15309B12001F9483 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		C9E3A1A115309B12001F9483 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "gong/gong-Prefix.pch";
+				INFOPLIST_FILE = "gong/gong-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		C9E3A1A215309B12001F9483 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "gong/gong-Prefix.pch";
+				INFOPLIST_FILE = "gong/gong-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C9E3A17C15309B12001F9483 /* Build configuration list for PBXProject "gong" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C9E3A19E15309B12001F9483 /* Debug */,
+				C9E3A19F15309B12001F9483 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C9E3A1A015309B12001F9483 /* Build configuration list for PBXNativeTarget "gong" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C9E3A1A115309B12001F9483 /* Debug */,
+				C9E3A1A215309B12001F9483 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = C9E3A17915309B12001F9483 /* Project object */;
+}
