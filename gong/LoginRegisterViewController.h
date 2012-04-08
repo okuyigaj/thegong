@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ServerCommunication.h"
 
-@interface LoginRegisterViewController : UIViewController<UITextFieldDelegate, UIGestureRecognizerDelegate, UIAlertViewDelegate>
+@interface LoginRegisterViewController : UIViewController<UITextFieldDelegate, UIGestureRecognizerDelegate, UIAlertViewDelegate, ServerCommunicationDelegate>
 
 
 @property (nonatomic, retain) IBOutlet UIScrollView *scrollView;
@@ -29,11 +30,17 @@
 @property (nonatomic, retain) IBOutlet UILabel *loadingLabel;
 @property (nonatomic, retain) IBOutlet UIButton *loadingCancelButton;
 
+@property (nonatomic, retain) ServerCommunication *serverComms;
+
+NSString* md5(NSString *str, int salt);
 
 - (IBAction)doLogin;
 - (IBAction)doRegister;
 
 - (IBAction)loadingCanceled;
+
+- (void)showLoadingViewWithText:(NSString *)text;
+- (void)hideLoadingView;
 
 - (BOOL)validateEmail:(NSString *)candidate;
 

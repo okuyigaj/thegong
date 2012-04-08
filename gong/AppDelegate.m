@@ -29,7 +29,7 @@
     NSString *str = [NSString 
         stringWithFormat:@"Device Token=%@",deviceToken];
     NSLog(@"%@",str);
- 
+    [[NSUserDefaults standardUserDefaults] setValue:str forKey:@"GONG_DEVICE_TOKEN"]; 
 }
  
 - (void)application:(UIApplication *)app didFailToRegisterForRemoteNotificationsWithError:(NSError *)err { 

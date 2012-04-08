@@ -7,10 +7,26 @@
 //
 
 #import "LoginRegisterViewController.h"
+#import <CommonCrypto/CommonDigest.h>
+
+#define CC_MD5_DIGEST_LENGTH 16   /* digest length in bytes */
+
+NSString* md5(NSString *str, int salt)
+{   
+  str = [NSString stringWithFormat:@"%@%d",str,salt];
+	const char *cStr = [str UTF8String];
+	unsigned char result[CC_MD5_DIGEST_LENGTH];
+	CC_MD5( cStr, strlen(cStr), result );
+	return [NSString stringWithFormat:
+			@"%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X",
+			result[0], result[1], result[2], result[3], result[4], result[5], result[6], result[7],
+			result[8], result[9], result[10], result[11], result[12], result[13], result[14], result[15]
+			];
+}
 
 @implementation LoginRegisterViewController
 
-@synthesize scrollView, activeTextField, errorTextField;
+@synthesize scrollView, activeTextField, errorTextField, serverComms;
 @synthesize loadingView, loadingLabel, loadingCancelButton;
 @synthesize loginButton, loginEmailTextField, loginPasswordTextField;
 @synthesize registerButton, registerEmailTextField, registerPasswordTextField, registerPassword2TextField, registerDisplayNameTextField;
@@ -59,7 +75,7 @@
     return self;
 }
 - (IBAction)loadingCanceled {
-  [UIView animateWithDuration:1.0f animations:^{self.loadingView.alpha=0.0f;} completion:^(BOOL b){self.loadingView.hidden = YES;}];
+  [self hideLoadingView];
 }
 
 - (IBAction)doLogin {
@@ -79,10 +95,7 @@
     [errorView show];
   } else {
     //ACTUALLY DO LOGIN.
-    [self.activeTextField resignFirstResponder];
-    self.loadingView.hidden = NO;
-    self.loadingLabel.text = @"Logging In";
-    [UIView animateWithDuration:1.0f animations:^{self.loadingView.alpha = 0.8f;}];
+    [self showLoadingViewWithText:@"Logging in"];
   }
 }
 
@@ -102,7 +115,7 @@
     self.errorTextField = self.registerPasswordTextField;
     self.registerPassword2TextField.text = @"";
     self.registerPasswordTextField.text = @"";
-  } else if (self.registerPasswordTextField != self.registerPassword2TextField) {
+  } else if (![self.registerPasswordTextField.text isEqualToString:self.registerPassword2TextField.text]) {
     errorMessage = @"Passwords did not match";
     self.errorTextField = self.registerPasswordTextField;
     self.registerPasswordTextField.text = @"";
@@ -114,8 +127,43 @@
     [errorView show];
   } else {
     //ACTUALLY DO REGISTRATION.
+    [self showLoadingViewWithText:@"Registering"];
+    
+    int salt = arc4random() % 100000;
+    [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithInt:salt] forKey:@"GONG_PASSWORD_SALT"];
+
+
+    NSString *passwordHash = md5(self.registerPasswordTextField.text, salt);
+
+    self.serverComms = [[ServerCommunication alloc] init];
+    self.serverComms.delegate = self;
+    [self.serverComms registerWithUsername:self.registerDisplayNameTextField.text email:self.registerEmailTextField.text andPassword:passwordHash];
   }
   
+}
+
+-(void)registrationWasSuccessful:(BOOL)_trueOrFalse withReason:(NSString *)_reason {
+  //Callback from registration server-comms.
+  if (_trueOrFalse) {
+    [self hideLoadingView];
+  } else {
+    [self hideLoadingView];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:_reason delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+    [alertView show];
+  }
+}
+
+- (void)showLoadingViewWithText:(NSString *)text {
+  //Hide the keyboard if it's up.
+  NSLog(@"Showing Loading View");
+  [self.activeTextField resignFirstResponder];
+  self.loadingLabel.text = text;
+  self.loadingView.hidden = NO;
+  [UIView animateWithDuration:0.5f animations:^{self.loadingView.alpha=0.8f;} completion:^(BOOL b){}];
+}
+
+- (void)hideLoadingView {
+  [UIView animateWithDuration:0.5f animations:^{self.loadingView.alpha=0.0f;} completion:^(BOOL b){self.loadingView.hidden = YES;}];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
@@ -124,11 +172,6 @@
 }
 
 - (BOOL) validateEmail: (NSString *) candidate {
-    NSLog(@"asdhasdgkjs");
-    if (candidate == nil) {
-      NSLog(@"Nil Email Address");
-      return NO;
-    }
     NSString *emailRegex = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}"; 
     NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegex]; 
 
