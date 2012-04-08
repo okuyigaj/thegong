@@ -10,7 +10,32 @@
 
 @implementation MainViewController
 
+@synthesize isLoggedIn = __isLoggedIn;
 @synthesize logoutButton, friendsButton, gongButton;
+
+- (BOOL)isLoggedIn {
+  if (_isLoggedIn == 0) {
+    //Check User Default.
+    BOOL tmp = [[NSUserDefaults standardUserDefaults] boolForKey:@"GONG_IS_LOGGED_IN"];
+    if (tmp) {
+      _isLoggedIn = 1;
+    } else {
+      _isLoggedIn = -1;
+    }
+  }
+  return (_isLoggedIn == 1);
+}
+
+- (void)setIsLoggedIn:(BOOL)isLoggedIn {
+  if ((isLoggedIn && _isLoggedIn == -1) || (!isLoggedIn && _isLoggedIn == 1)) {
+    [[NSUserDefaults standardUserDefaults] setBool:isLoggedIn forKey:@"GONG_IS_LOGGED_IN"];
+    if (isLoggedIn) {
+      _isLoggedIn = 1;
+    } else {
+      _isLoggedIn = -1;
+    }
+  }
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -31,20 +56,14 @@
 
 #pragma mark - View lifecycle
 
-/*
-// Implement loadView to create a view hierarchy programmatically, without using a nib.
-- (void)loadView
-{
+- (void)viewDidAppear:(BOOL)animated {
+  if (!self.isLoggedIn) {
+    [self performSegueWithIdentifier:@"ShowLoginRegisterView" sender:self];
+  } else {
+  }
 }
-*/
 
-/*
-// Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-}
-*/
+
 
 - (void)viewDidUnload
 {

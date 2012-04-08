@@ -184,7 +184,7 @@
 		C9E3A17915309B12001F9483 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0420;
+				LastUpgradeCheck = 0430;
 			};
 			buildConfigurationList = C9E3A17C15309B12001F9483 /* Build configuration list for PBXProject "gong" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -300,10 +300,12 @@
 		C9E3A1A115309B12001F9483 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: James Penney (HHP3ZB5P2Z)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "gong/gong-Prefix.pch";
 				INFOPLIST_FILE = "gong/gong-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "447C382F-7B2D-4CD6-8DF4-DBA212F64127";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -338,6 +340,7 @@
 				C9E3A1A215309B12001F9483 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -9,6 +9,12 @@
 #import <UIKit/UIKit.h>
 
 @interface MainViewController : UIViewController
+{
+  int _isLoggedIn;
+}
+
+
+@property (nonatomic, assign) BOOL isLoggedIn;
 
 @property (nonatomic, retain) IBOutlet UIButton *logoutButton;
 @property (nonatomic, retain) IBOutlet UIButton *friendsButton;

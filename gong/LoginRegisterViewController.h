@@ -8,6 +8,33 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LoginRegisterViewController : UIViewController
+@interface LoginRegisterViewController : UIViewController<UITextFieldDelegate, UIGestureRecognizerDelegate, UIAlertViewDelegate>
+
+
+@property (nonatomic, retain) IBOutlet UIScrollView *scrollView;
+@property (nonatomic, assign) UITextField *activeTextField;
+@property (nonatomic, assign) UITextField *errorTextField;
+
+@property (nonatomic, retain) IBOutlet UITextField *loginEmailTextField;
+@property (nonatomic, retain) IBOutlet UITextField *loginPasswordTextField;
+@property (nonatomic, retain) IBOutlet UIButton *loginButton;
+
+@property (nonatomic, retain) IBOutlet UITextField *registerDisplayNameTextField;
+@property (nonatomic, retain) IBOutlet UITextField *registerEmailTextField;
+@property (nonatomic, retain) IBOutlet UITextField *registerPasswordTextField;
+@property (nonatomic, retain) IBOutlet UITextField *registerPassword2TextField;
+@property (nonatomic, retain) IBOutlet UIButton *registerButton;
+
+@property (nonatomic, retain) IBOutlet UIView *loadingView;
+@property (nonatomic, retain) IBOutlet UILabel *loadingLabel;
+@property (nonatomic, retain) IBOutlet UIButton *loadingCancelButton;
+
+
+- (IBAction)doLogin;
+- (IBAction)doRegister;
+
+- (IBAction)loadingCanceled;
+
+- (BOOL)validateEmail:(NSString *)candidate;
 
 @end
