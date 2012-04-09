@@ -10,8 +10,8 @@
 
 @implementation ConfirmRegistrationViewController
 
-@synthesize resendCodeButton, backToRegistrationButton, activateEmailButton, activationCodeTextField;
-@synthesize serverComms, emailAddress;
+@synthesize resendCodeButton, backToRegistrationButton, activateEmailButton, activationCodeTextField, loadingView;
+@synthesize serverComms, emailAddress, passwordHash;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -55,15 +55,32 @@
 
 - (void)authorisationWasSuccessful:(BOOL)_trueOrFalse withReason:(NSString *)_reason {
   if (_trueOrFalse) {
-    
+    self.loadingView.loadingMessage = @"Logging in";
+    [self.serverComms loginWithEmailAddress:self.emailAddress andPassword:self.passwordHash];
   } else {
     UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Error" message:_reason delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+    av.tag = 0;
+    [av show];
+  }
+}
+
+- (void)loginWasSuccessful:(BOOL)_trueOrFalse withReason:(NSString *)_reason {
+  if (_trueOrFalse) {
+    [self.loadingView hideAnimated:YES];
+    [self.navigationController dismissModalViewControllerAnimated:YES];
+  } else {
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Error" message:_reason delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+    av.tag = 1;
     [av show];
   }
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-  [self.activationCodeTextField becomeFirstResponder];
+  if (alertView.tag == 0) {
+    [self.activationCodeTextField becomeFirstResponder];
+  } else {
+    //Not really sure what to do here.
+  }
 }
 
 - (void)LoadingViewCancelButtonWasPressed {

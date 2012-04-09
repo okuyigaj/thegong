@@ -30,7 +30,7 @@ NSString* md5(NSString *str, int salt)
 @synthesize scrollView, activeTextField, errorTextField, serverComms;
 @synthesize loadingView, loadingLabel, loadingCancelButton;
 @synthesize loginButton, loginEmailTextField, loginPasswordTextField;
-@synthesize registerButton, registerEmailTextField, registerPasswordTextField, registerPassword2TextField, registerDisplayNameTextField;
+@synthesize registerButton, registerEmailTextField, registerPasswordTextField, registerPassword2TextField, registerDisplayNameTextField, passwordHash;
 
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
@@ -131,11 +131,11 @@ NSString* md5(NSString *str, int salt)
     self.loadingView.loadingMessage = @"Registering";
     [self.loadingView showAnimated:YES];
     
-    NSString *passwordHash = md5(self.registerPasswordTextField.text, PASSWORD_SALT);
+    self.passwordHash = md5(self.registerPasswordTextField.text, PASSWORD_SALT);
 
     self.serverComms = [[ServerCommunication alloc] init];
     self.serverComms.delegate = self;
-    [self.serverComms registerWithUsername:self.registerDisplayNameTextField.text email:self.registerEmailTextField.text andPassword:passwordHash];
+    [self.serverComms registerWithUsername:self.registerDisplayNameTextField.text email:self.registerEmailTextField.text andPassword:self.passwordHash];
   }
   
 }
@@ -169,6 +169,7 @@ NSString* md5(NSString *str, int salt)
     //pass the users details accross.
     ConfirmRegistrationViewController *vc = segue.destinationViewController;
     vc.emailAddress = self.registerEmailTextField.text;
+    vc.passwordHash = self.passwordHash;
   }
 }
 

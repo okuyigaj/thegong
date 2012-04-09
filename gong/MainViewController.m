@@ -14,27 +14,11 @@
 @synthesize logoutButton, friendsButton, gongButton;
 
 - (BOOL)isLoggedIn {
-  if (_isLoggedIn == 0) {
-    //Check User Default.
-    BOOL tmp = [[NSUserDefaults standardUserDefaults] boolForKey:@"GONG_IS_LOGGED_IN"];
-    if (tmp) {
-      _isLoggedIn = 1;
-    } else {
-      _isLoggedIn = -1;
-    }
-  }
-  return (_isLoggedIn == 1);
+  return [[NSUserDefaults standardUserDefaults] boolForKey:@"GONG_IS_LOGGED_IN"];
 }
 
 - (void)setIsLoggedIn:(BOOL)isLoggedIn {
-  if ((isLoggedIn && _isLoggedIn == -1) || (!isLoggedIn && _isLoggedIn == 1)) {
-    [[NSUserDefaults standardUserDefaults] setBool:isLoggedIn forKey:@"GONG_IS_LOGGED_IN"];
-    if (isLoggedIn) {
-      _isLoggedIn = 1;
-    } else {
-      _isLoggedIn = -1;
-    }
-  }
+  [[NSUserDefaults standardUserDefaults] setBool:isLoggedIn forKey:@"GONG_IS_LOGGED_IN"];
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil

@@ -20,6 +20,7 @@
 
 @property (nonatomic, retain) ServerCommunication *serverComms;
 @property (nonatomic, retain) NSString *emailAddress;
+@property (nonatomic, retain) NSString *passwordHash;
 
 - (IBAction)activateEmail;
 - (IBAction)backToRegistration;

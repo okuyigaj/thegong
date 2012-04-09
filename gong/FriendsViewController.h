@@ -10,4 +10,7 @@
 
 @interface FriendsViewController : UIViewController
 
+
+- (IBAction)backToMainView;
+
 @end

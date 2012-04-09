@@ -35,6 +35,12 @@
     [userDefaults synchronize];
 }
 
+- (void)updateIsLoggedIn:(BOOL)newLoggedIn {
+  NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+  [userDefaults setBool:newLoggedIn forKey:@"GONG_IS_LOGGED_IN"];
+  [userDefaults synchronize];
+}
+
 - (void)registerWithUsername:(NSString *)_username email:(NSString *)_email andPassword:(NSString *)_password{
     if(connectionIsBusy){
         [delegate registrationWasSuccessful:false withReason:@"Connection is busy"];
@@ -46,7 +52,7 @@
     self.password = _password;
     self.action = @"register";
     
-    NSString *deviceToken = [[NSUserDefaults standardUserDefaults] objectForKey:@"deviceToken"];
+    NSString *deviceToken = [[NSUserDefaults standardUserDefaults] objectForKey:@"GONG_DEVICE_TOKEN"];
         
     NSString *post = [NSString stringWithFormat:@"action=register&username=%@&email=%@&password=%@&deviceToken=%@",
                       self.username,
@@ -100,7 +106,7 @@
     self.password = _password;
     self.action = @"login";
     
-    NSString *deviceToken = [[NSUserDefaults standardUserDefaults] objectForKey:@"deviceToken"];
+    NSString *deviceToken = [[NSUserDefaults standardUserDefaults] objectForKey:@"GONG_DEVICE_TOKEN"];
     
     NSString *post = [NSString stringWithFormat:@"action=login&email=%@&password=%@&deviceToken=%@",
                       self.emailAddress,
@@ -127,9 +133,9 @@
     connectionIsBusy = true;
     self.action = @"getFriends";
     
-    NSString *deviceToken = [[NSUserDefaults standardUserDefaults] objectForKey:@"deviceToken"];
-    NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:@"userId"];
-    NSString *sessionKey = [[NSUserDefaults standardUserDefaults] objectForKey:@"sessionKey"];
+    NSString *deviceToken = [[NSUserDefaults standardUserDefaults] objectForKey:@"GONG_DEVICE_TOKEN"];
+    NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:@"GONG_USER_ID"];
+    NSString *sessionKey = [[NSUserDefaults standardUserDefaults] objectForKey:@"GONG_SESSION_KEY"];
     
     NSString *post = [NSString stringWithFormat:@"action=getFriends&userid=%@&sessionKey=%@&deviceToken=%@",
                       userId,
@@ -158,8 +164,8 @@
     connectionIsBusy = true;
     self.action = @"addFriend";
     
-    NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:@"userId"];
-    NSString *sessionKey = [[NSUserDefaults standardUserDefaults] objectForKey:@"sessionKey"];
+    NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:@"GONG_USER_ID"];
+    NSString *sessionKey = [[NSUserDefaults standardUserDefaults] objectForKey:@"GONG_SESSION_KEY"];
     
     NSString *post = [NSString stringWithFormat:@"action=addFriend&userid=%@&sessionKey=%@&email=%@",
                       userId,
@@ -230,21 +236,22 @@
         }
     }else if([[results objectForKey:@"action"] isEqualToString:@"login"]){
         if ([[results objectForKey:@"code"] isEqualToString:@"0"]){
-            [self updateLocalSessionKey:[results objectForKey:@"sessionKey"]];
-            [self storeUserId:[results objectForKey:@"userid"]];
+            [self updateLocalSessionKey:[results objectForKey:@"GONG_SESSION_KEY"]];
+            [self storeUserId:[results objectForKey:@"GONG_USER_ID"]];
+            [self updateIsLoggedIn:YES];
             [delegate loginWasSuccessful:true withReason:nil];
         }else{
             [delegate loginWasSuccessful:false withReason:[results objectForKey:@"reason"]];
         }
     }else if([[results objectForKey:@"action"] isEqualToString:@"getFriends"]){
-        [self updateLocalSessionKey:[results objectForKey:@"sessionKey"]];
+        [self updateLocalSessionKey:[results objectForKey:@"GONG_SESSION_KEY"]];
         if ([[results objectForKey:@"code"] isEqualToString:@"0"]){
             [delegate didDownloadFriendsList:true withReason:nil andFriends:[results objectForKey:@"friends"]];
         }else{
             [delegate didDownloadFriendsList:false withReason:[results objectForKey:@"reason"] andFriends:nil];
         }
     }else if([[results objectForKey:@"action"] isEqualToString:@"addFriend"]){
-        [self updateLocalSessionKey:[results objectForKey:@"sessionKey"]];
+        [self updateLocalSessionKey:[results objectForKey:@"GONG_SESSION_KEY"]];
         if ([[results objectForKey:@"code"] isEqualToString:@"0"]){
             [delegate didAddFriend:true withReason:nil andNewFriendsList:[results objectForKey:@"friends"]];        
         }else{

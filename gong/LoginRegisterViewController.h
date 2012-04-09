@@ -26,6 +26,7 @@
 @property (nonatomic, retain) IBOutlet UITextField *registerPasswordTextField;
 @property (nonatomic, retain) IBOutlet UITextField *registerPassword2TextField;
 @property (nonatomic, retain) IBOutlet UIButton *registerButton;
+@property (nonatomic, retain) NSString *passwordHash;
 
 @property (nonatomic, retain) IBOutlet LoadingView *loadingView;
 @property (nonatomic, retain) IBOutlet UILabel *loadingLabel;

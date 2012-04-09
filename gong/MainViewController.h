@@ -9,10 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface MainViewController : UIViewController
-{
-  int _isLoggedIn;
-}
-
 
 @property (nonatomic, assign) BOOL isLoggedIn;
 
