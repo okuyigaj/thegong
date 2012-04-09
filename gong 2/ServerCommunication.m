@@ -33,6 +33,13 @@
 	return self;
 }
 
+-(void)updateLocalSessionKey:(NSString *)newKey andUserId:(NSString *)userId{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setObject:newKey forKey:@"sessionKey"];
+    [userDefaults setObject:userId forKey:@"userId"];
+    [userDefaults synchronize];
+}
+
 -(void)registerWithUsername:(NSString *)_username email:(NSString *)_email andPassword:(NSString *)_password{
     if(connectionIsBusy){
         [delegate registrationWasSuccessful:false withReason:@"Connection is busy"];
@@ -88,6 +95,64 @@
     [[NSURLConnection alloc] initWithRequest:postRequest delegate:self];
 }
 
+-(void)loginWithEmailAddress:(NSString *)_email andPassword:(NSString *)_password{
+    if(connectionIsBusy){
+        [delegate loginWasSuccessful:false withReason:@"Connection is busy"];
+        return;
+    }
+    connectionIsBusy = true;
+    self.emailAddress = _email;
+    self.password = _password;
+    self.action = @"login";
+    
+    NSString *deviceToken = [[NSUserDefaults standardUserDefaults] objectForKey:@"deviceToken"];
+    
+    NSString *post = [NSString stringWithFormat:@"action=login&email=%@&password=%@&deviceToken=%@",
+                      self.emailAddress,
+                      self.password,
+                      deviceToken];
+    
+    NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+    NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
+    NSMutableURLRequest *postRequest = [[[NSMutableURLRequest alloc] init] autorelease];
+    [postRequest setURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@action.php",siteURL]]];
+    [postRequest setHTTPMethod:@"POST"];
+    [postRequest setValue:postLength forHTTPHeaderField:@"Content-Length"];
+    [postRequest setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+    [postRequest setHTTPBody:postData];
+    
+    [[NSURLConnection alloc] initWithRequest:postRequest delegate:self];
+}
+
+-(void)getFriendsList{
+    if(connectionIsBusy){
+        [delegate registrationWasSuccessful:false withReason:@"Connection is busy"];
+        return;
+    }
+    connectionIsBusy = true;
+    self.action = @"getFriends";
+    
+    NSString *deviceToken = [[NSUserDefaults standardUserDefaults] objectForKey:@"deviceToken"];
+    NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:@"userId"];
+    NSString *sessionKey = [[NSUserDefaults standardUserDefaults] objectForKey:@"sessionKey"];
+    
+    NSString *post = [NSString stringWithFormat:@"action=getFriends&userid=%@&sessionKey=%@",
+                      userId,
+                      sessionKey,
+                      deviceToken];
+    
+    NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+    NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
+    NSMutableURLRequest *postRequest = [[[NSMutableURLRequest alloc] init] autorelease];
+    [postRequest setURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@action.php",siteURL]]];
+    [postRequest setHTTPMethod:@"POST"];
+    [postRequest setValue:postLength forHTTPHeaderField:@"Content-Length"];
+    [postRequest setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+    [postRequest setHTTPBody:postData];
+    
+    [[NSURLConnection alloc] initWithRequest:postRequest delegate:self];
+}
+
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
     responseData = [[NSMutableData alloc] init];
 	[responseData setLength:0];
@@ -103,6 +168,10 @@
         [delegate registrationWasSuccessful:false withReason:@"Connection to server failed"];
     }else if([action isEqualToString:@"auth"]){
         [delegate authorisationWasSuccessful:false withReason:@"Connection to server failed"];        
+    }else if([action isEqualToString:@"login"]){
+        [delegate loginWasSuccessful:false withReason:@"Connection to server failed"];        
+    }else if([action isEqualToString:@"getFriends"]){
+        [delegate didDownloadFriendsList:false withReason:@"Connection to server failed" andFriends:nil];        
     }
 }
 
@@ -118,16 +187,30 @@
     [responseString release];
     
     if([[results objectForKey:@"action"] isEqualToString:@"register"]){
-        if ([[results objectForKey:@"code"] isEqualToString:@"1"]){
-            [delegate registrationWasSuccessful:false withReason:[results objectForKey:@"reason"]];
-        }else{
+        if ([[results objectForKey:@"code"] isEqualToString:@"0"]){
             [delegate registrationWasSuccessful:true withReason:@""];
+        }else{
+            [delegate registrationWasSuccessful:false withReason:[results objectForKey:@"reason"]];
         }
     }else if([[results objectForKey:@"action"] isEqualToString:@"auth"]){
-        if ([[results objectForKey:@"code"] isEqualToString:@"1"]){
-            [delegate authorisationWasSuccessful:false withReason:[results objectForKey:@"reason"]];
-        }else{
+        if ([[results objectForKey:@"code"] isEqualToString:@"0"]){
             [delegate authorisationWasSuccessful:true withReason:@""];
+        }else{
+            [delegate authorisationWasSuccessful:false withReason:[results objectForKey:@"reason"]];
+        }
+    }else if([[results objectForKey:@"action"] isEqualToString:@"login"]){
+        if ([[results objectForKey:@"code"] isEqualToString:@"0"]){
+            [self updateLocalSessionKey:[results objectForKey:@"sessionKey"] andUserId:[results objectForKey:@"sessionKey"]];
+            [delegate loginWasSuccessful:true withReason:@""];
+        }else{
+            [delegate loginWasSuccessful:false withReason:[results objectForKey:@"reason"]];
+        }
+    }else if([[results objectForKey:@"action"] isEqualToString:@"getFriends"]){
+        if ([[results objectForKey:@"code"] isEqualToString:@"0"]){
+            [self updateLocalSessionKey:[results objectForKey:@"sessionKey"] andUserId:[results objectForKey:@"userid"]];
+            [delegate didDownloadFriendsList:true withReason:@"" andFriends:[results objectForKey:@"friends"]];
+        }else{
+            [delegate didDownloadFriendsList:false withReason:[results objectForKey:@"reason"] andFriends:nil];
         }
     }
 
