@@ -8,6 +8,7 @@
 
 #import "LoginRegisterViewController.h"
 #import <CommonCrypto/CommonDigest.h>
+#import "ConfirmRegistrationViewController.h"
 
 #define CC_MD5_DIGEST_LENGTH 16   /* digest length in bytes */
 
@@ -74,9 +75,6 @@ NSString* md5(NSString *str, int salt)
     }
     return self;
 }
-- (IBAction)loadingCanceled {
-  [self hideLoadingView];
-}
 
 - (IBAction)doLogin {
   //Check that they've entered a login and password.
@@ -95,7 +93,9 @@ NSString* md5(NSString *str, int salt)
     [errorView show];
   } else {
     //ACTUALLY DO LOGIN.
-    [self showLoadingViewWithText:@"Logging in"];
+    [self.activeTextField resignFirstResponder];
+    self.loadingView.loadingMessage = @"Logging in";
+    [self.loadingView showAnimated:YES];
   }
 }
 
@@ -126,14 +126,12 @@ NSString* md5(NSString *str, int salt)
     UIAlertView *errorView = [[UIAlertView alloc] initWithTitle:@"Error" message:errorMessage delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
     [errorView show];
   } else {
-    //ACTUALLY DO REGISTRATION.
-    [self showLoadingViewWithText:@"Registering"];
+    //DO REGISTRATION.
+    [self.activeTextField resignFirstResponder];
+    self.loadingView.loadingMessage = @"Registering";
+    [self.loadingView showAnimated:YES];
     
-    int salt = arc4random() % 100000;
-    [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithInt:salt] forKey:@"GONG_PASSWORD_SALT"];
-
-
-    NSString *passwordHash = md5(self.registerPasswordTextField.text, salt);
+    NSString *passwordHash = md5(self.registerPasswordTextField.text, PASSWORD_SALT);
 
     self.serverComms = [[ServerCommunication alloc] init];
     self.serverComms.delegate = self;
@@ -145,25 +143,13 @@ NSString* md5(NSString *str, int salt)
 -(void)registrationWasSuccessful:(BOOL)_trueOrFalse withReason:(NSString *)_reason {
   //Callback from registration server-comms.
   if (_trueOrFalse) {
-    [self hideLoadingView];
+    [self.loadingView hideAnimated:YES];
+    [self performSegueWithIdentifier:@"ShowAuthorizeEmailView" sender:self];
   } else {
-    [self hideLoadingView];
+    [self.loadingView hideAnimated:YES];
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:_reason delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
     [alertView show];
   }
-}
-
-- (void)showLoadingViewWithText:(NSString *)text {
-  //Hide the keyboard if it's up.
-  NSLog(@"Showing Loading View");
-  [self.activeTextField resignFirstResponder];
-  self.loadingLabel.text = text;
-  self.loadingView.hidden = NO;
-  [UIView animateWithDuration:0.5f animations:^{self.loadingView.alpha=0.8f;} completion:^(BOOL b){}];
-}
-
-- (void)hideLoadingView {
-  [UIView animateWithDuration:0.5f animations:^{self.loadingView.alpha=0.0f;} completion:^(BOOL b){self.loadingView.hidden = YES;}];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
@@ -176,6 +162,14 @@ NSString* md5(NSString *str, int salt)
     NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegex]; 
 
     return [emailTest evaluateWithObject:candidate];
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+  if ([segue.identifier isEqualToString:@"ShowAuthorizeEmailView"]) {
+    //pass the users details accross.
+    ConfirmRegistrationViewController *vc = segue.destinationViewController;
+    vc.emailAddress = self.registerEmailTextField.text;
+  }
 }
 
 - (void)didReceiveMemoryWarning
@@ -198,6 +192,11 @@ NSString* md5(NSString *str, int salt)
                                              name:UIKeyboardWillHideNotification
                                            object:nil];
   
+}
+
+- (void)LoadingViewCancelButtonWasPressed {
+  [self.loadingView hideAnimated:YES];
+  [self.serverComms cancelCurrentTask];
 }
 
 - (void)viewDidUnload

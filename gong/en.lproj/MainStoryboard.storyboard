@@ -6,6 +6,23 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1181"/>
     </dependencies>
     <scenes>
+        <!--Navigation Controller-->
+        <scene sceneID="xyu-2d-lpb">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2fX-QY-Lzc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <navigationController definesPresentationContext="YES" navigationBarHidden="YES" id="A7c-QE-JKv" sceneMemberID="viewController">
+                    <nil key="simulatedTopBarMetrics"/>
+                    <nil key="simulatedBottomBarMetrics"/>
+                    <navigationBar key="navigationBar" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="yDT-OQ-HKd">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="Zwn-U3-2kf" kind="relationship" relationship="rootViewController" id="SQh-Mj-1yC"/>
+                    </connections>
+                </navigationController>
+            </objects>
+            <point key="canvasLocation" x="14" y="248"/>
+        </scene>
         <!--Login Register View Controller-->
         <scene sceneID="TuH-1c-iQG">
             <objects>
@@ -120,47 +137,20 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </view>
-                            <view hidden="YES" opaque="NO" alpha="0.0" contentMode="scaleToFill" id="pDX-HJ-MNp">
+                            <view hidden="YES" opaque="NO" contentMode="scaleToFill" id="cJ9-Hi-cFs" customClass="LoadingView">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="460"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" animating="YES" style="whiteLarge" id="cFr-NT-8fI">
-                                        <rect key="frame" x="139" y="155" width="37" height="37"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    </activityIndicatorView>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="LOADING TEXT" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="XbQ-UZ-3FA">
-                                        <rect key="frame" x="20" y="234" width="280" height="45"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="ovg-4Y-ovF">
-                                        <rect key="frame" x="110" y="333" width="101" height="37"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                        <state key="normal" title="Cancel">
-                                            <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <state key="highlighted">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="loadingCanceled" destination="Zwn-U3-2kf" eventType="touchUpInside" id="wBI-Cf-fl8"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="delegate" destination="Zwn-U3-2kf" id="Olj-hG-gei"/>
+                                </connections>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="v0T-DR-8ye"/>
                     <connections>
-                        <outlet property="loadingCancelButton" destination="ovg-4Y-ovF" id="5MB-K7-RCl"/>
-                        <outlet property="loadingLabel" destination="XbQ-UZ-3FA" id="iTR-rQ-XWY"/>
-                        <outlet property="loadingView" destination="pDX-HJ-MNp" id="J79-ea-VBc"/>
+                        <outlet property="loadingView" destination="cJ9-Hi-cFs" id="jG0-hP-ybQ"/>
                         <outlet property="loginButton" destination="Ay7-Me-csD" id="4ni-cZ-HAF"/>
                         <outlet property="loginEmailTextField" destination="VyW-Ga-XD9" id="VZP-ow-7pq"/>
                         <outlet property="loginPasswordTextField" destination="Zop-zq-MGG" id="vLm-BN-dAO"/>
@@ -171,10 +161,11 @@
                         <outlet property="registerPasswordTextField" destination="nyY-qT-NBn" id="fhQ-58-6IO"/>
                         <outlet property="scrollView" destination="Qfx-3v-QCd" id="Q1h-tJ-iiu"/>
                         <outlet property="view" destination="jz5-8v-ErV" id="FvC-9K-EcD"/>
+                        <segue destination="5D0-qk-AqY" kind="push" identifier="ShowAuthorizeEmailView" id="f9s-ju-XPv"/>
                     </connections>
                 </viewController>
             </objects>
-            <point key="canvasLocation" x="533" y="268"/>
+            <point key="canvasLocation" x="548" y="264"/>
         </scene>
         <!--Confirm Registration View Controller-->
         <scene sceneID="o0t-LT-95C">
@@ -185,11 +176,14 @@
                         <rect key="frame" x="0.0" y="20" width="320" height="460"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" adjustsFontSizeToFit="NO" minimumFontSize="22" id="kwb-yd-Ap4">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" clearsOnBeginEditing="YES" adjustsFontSizeToFit="NO" minimumFontSize="22" id="kwb-yd-Ap4">
                                 <rect key="frame" x="20" y="93" width="280" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="22"/>
-                                <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="numberPad" returnKeyType="done"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="numberPad" returnKeyType="go" enablesReturnKeyAutomatically="YES"/>
+                                <connections>
+                                    <outlet property="delegate" destination="5D0-qk-AqY" id="j59-5X-lTx"/>
+                                </connections>
                             </textField>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="We've sent you a 5 digit code to your email address. Please enter it in here." lineBreakMode="wordWrap" numberOfLines="6" minimumFontSize="10" id="rEb-sM-6ZI">
                                 <rect key="frame" x="20" y="20" width="280" height="65"/>
@@ -209,6 +203,9 @@
                                 <state key="highlighted">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="backToRegistration" destination="5D0-qk-AqY" eventType="touchUpInside" id="SZQ-DN-LCd"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="KCH-sN-OTJ">
                                 <rect key="frame" x="20" y="132" width="86" height="37"/>
@@ -221,6 +218,9 @@
                                 <state key="highlighted">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="resendCode" destination="5D0-qk-AqY" eventType="touchUpInside" id="cYw-jX-pTD"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="DCv-X3-XAg">
                                 <rect key="frame" x="187" y="132" width="113" height="82"/>
@@ -233,13 +233,32 @@
                                 <state key="highlighted">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="activateEmail" destination="5D0-qk-AqY" eventType="touchUpInside" id="8Ns-dj-QlE"/>
+                                </connections>
                             </button>
+                            <view hidden="YES" opaque="NO" contentMode="scaleToFill" id="zJo-Mf-OR6" customClass="LoadingView">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="460"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="delegate" destination="5D0-qk-AqY" id="cT1-iA-kg4"/>
+                                </connections>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
+                    <navigationItem key="navigationItem" id="xQU-BI-VBF"/>
+                    <connections>
+                        <outlet property="activateEmailButton" destination="DCv-X3-XAg" id="gEh-2e-Pvg"/>
+                        <outlet property="activationCodeTextField" destination="kwb-yd-Ap4" id="fmn-0z-yRU"/>
+                        <outlet property="backToRegistrationButton" destination="vqG-Bj-jj8" id="M1d-GQ-eUm"/>
+                        <outlet property="loadingView" destination="zJo-Mf-OR6" id="5bc-O9-F7O"/>
+                        <outlet property="resendCodeButton" destination="KCH-sN-OTJ" id="T6y-nh-xQJ"/>
+                    </connections>
                 </viewController>
             </objects>
-            <point key="canvasLocation" x="1087" y="268"/>
+            <point key="canvasLocation" x="1047" y="212"/>
         </scene>
         <!--Main View Controller - Root View Controller-->
         <scene sceneID="gjO-XV-zXH">
@@ -288,9 +307,6 @@
                                 <state key="highlighted">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
-                                <connections>
-                                    <segue destination="Zwn-U3-2kf" kind="modal" identifier="ShowLoginRegisterView" id="pd5-rp-iEx"/>
-                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -300,10 +316,11 @@
                         <outlet property="friendsButton" destination="a9j-5u-eAE" id="ipI-Ie-vs4"/>
                         <outlet property="gongButton" destination="RXx-RC-8Fm" id="7KS-up-PGH"/>
                         <outlet property="logoutButton" destination="uV7-4U-9ty" id="eDq-y6-Kh8"/>
+                        <segue destination="A7c-QE-JKv" kind="modal" identifier="ShowLoginRegisterView" id="pf1-HL-O6R"/>
                     </connections>
                 </viewController>
             </objects>
-            <point key="canvasLocation" x="204" y="-443"/>
+            <point key="canvasLocation" x="187" y="-436"/>
         </scene>
         <!--Friends View Controller-->
         <scene sceneID="Jlj-WD-XM8">
@@ -397,19 +414,38 @@
     <classes>
         <class className="ConfirmRegistrationViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/ConfirmRegistrationViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="activateEmail"/>
+                <relationship kind="action" name="backToRegistration"/>
+                <relationship kind="action" name="resendCode"/>
+                <relationship kind="outlet" name="activateEmailButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="activationCodeTextField" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="backToRegistrationButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="loadingView" candidateClass="LoadingView"/>
+                <relationship kind="outlet" name="resendCodeButton" candidateClass="UIButton"/>
+            </relationships>
         </class>
         <class className="FriendsViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/FriendsViewController.h"/>
+        </class>
+        <class className="LoadingView" superclassName="UIView">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/LoadingView.h"/>
+            <relationships>
+                <relationship kind="action" name="CancelButtonPressed"/>
+                <relationship kind="outlet" name="cancelButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="delegate"/>
+                <relationship kind="outlet" name="label" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="view" candidateClass="UIView"/>
+            </relationships>
         </class>
         <class className="LoginRegisterViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/LoginRegisterViewController.h"/>
             <relationships>
                 <relationship kind="action" name="doLogin"/>
                 <relationship kind="action" name="doRegister"/>
-                <relationship kind="action" name="loadingCanceled"/>
                 <relationship kind="outlet" name="loadingCancelButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="loadingLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="loadingView" candidateClass="UIView"/>
+                <relationship kind="outlet" name="loadingView" candidateClass="LoadingView"/>
                 <relationship kind="outlet" name="loginButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="loginEmailTextField" candidateClass="UITextField"/>
                 <relationship kind="outlet" name="loginPasswordTextField" candidateClass="UITextField"/>

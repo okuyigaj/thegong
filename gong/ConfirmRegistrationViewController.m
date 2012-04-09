@@ -10,6 +10,9 @@
 
 @implementation ConfirmRegistrationViewController
 
+@synthesize resendCodeButton, backToRegistrationButton, activateEmailButton, activationCodeTextField;
+@synthesize serverComms, emailAddress;
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -27,22 +30,54 @@
     // Release any cached data, images, etc that aren't in use.
 }
 
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+  [self activateEmail];
+  return YES;
+}
+
+- (IBAction)activateEmail {
+
+  self.serverComms = [[ServerCommunication alloc] init];
+  self.serverComms.delegate = self;
+  NSString *activationCode = self.activationCodeTextField.text;
+  [self.serverComms authoriseWithAuthToken:activationCode forEmail:self.emailAddress];
+  [self.activationCodeTextField resignFirstResponder];
+  self.loadingView.loadingMessage = @"Activating";
+  [self.loadingView showAnimated:YES];
+}
+
+- (IBAction)resendCode {
+}
+
+- (IBAction)backToRegistration {
+  [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)authorisationWasSuccessful:(BOOL)_trueOrFalse withReason:(NSString *)_reason {
+  if (_trueOrFalse) {
+    
+  } else {
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Error" message:_reason delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+    [av show];
+  }
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+  [self.activationCodeTextField becomeFirstResponder];
+}
+
+- (void)LoadingViewCancelButtonWasPressed {
+  [self.loadingView hideAnimated:YES];
+  [self.activationCodeTextField becomeFirstResponder];
+  [self.serverComms cancelCurrentTask];
+}
+
+
 #pragma mark - View lifecycle
 
-/*
-// Implement loadView to create a view hierarchy programmatically, without using a nib.
-- (void)loadView
-{
+- (void)viewWillAppear:(BOOL)animated {
+  [self.activationCodeTextField becomeFirstResponder];
 }
-*/
-
-/*
-// Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-}
-*/
 
 - (void)viewDidUnload
 {

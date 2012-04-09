@@ -32,6 +32,8 @@
 		C9E3A1AF1530A02B001F9483 /* FriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E3A1AE1530A02B001F9483 /* FriendsViewController.m */; };
 		C9E3A1B31530A389001F9483 /* ConfirmRegistrationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E3A1B21530A389001F9483 /* ConfirmRegistrationViewController.m */; };
 		C9E3A1B71530A771001F9483 /* AddFriendViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E3A1B61530A771001F9483 /* AddFriendViewController.m */; };
+		C9F8EEA11533319F00EAE719 /* LoadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F8EEA01533319F00EAE719 /* LoadingView.m */; };
+		C9F8EEA31533322F00EAE719 /* LoadingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9F8EEA21533322F00EAE719 /* LoadingView.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -83,6 +85,10 @@
 		C9E3A1B21530A389001F9483 /* ConfirmRegistrationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfirmRegistrationViewController.m; sourceTree = "<group>"; };
 		C9E3A1B51530A771001F9483 /* AddFriendViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddFriendViewController.h; sourceTree = "<group>"; };
 		C9E3A1B61530A771001F9483 /* AddFriendViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddFriendViewController.m; sourceTree = "<group>"; };
+		C9F8EE9C1533304A00EAE719 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		C9F8EE9F1533319F00EAE719 /* LoadingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoadingView.h; sourceTree = "<group>"; };
+		C9F8EEA01533319F00EAE719 /* LoadingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoadingView.m; sourceTree = "<group>"; };
+		C9F8EEA21533322F00EAE719 /* LoadingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingView.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -170,6 +176,7 @@
 		C9E3A18C15309B12001F9483 /* gong */ = {
 			isa = PBXGroup;
 			children = (
+				C9F8EE9E1533318700EAE719 /* LoadingView */,
 				C9AB9062153224E600852A61 /* ServerCommunication */,
 				C9AB9053153224CD00852A61 /* JSON */,
 				C9E3A1B41530A752001F9483 /* AddFriendViewController */,
@@ -192,6 +199,7 @@
 				C9E3A18F15309B12001F9483 /* InfoPlist.strings */,
 				C9E3A19215309B12001F9483 /* main.m */,
 				C9E3A19415309B12001F9483 /* gong-Prefix.pch */,
+				C9F8EE9C1533304A00EAE719 /* Constants.h */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -239,6 +247,16 @@
 				C9E3A1B61530A771001F9483 /* AddFriendViewController.m */,
 			);
 			name = AddFriendViewController;
+			sourceTree = "<group>";
+		};
+		C9F8EE9E1533318700EAE719 /* LoadingView */ = {
+			isa = PBXGroup;
+			children = (
+				C9F8EE9F1533319F00EAE719 /* LoadingView.h */,
+				C9F8EEA01533319F00EAE719 /* LoadingView.m */,
+				C9F8EEA21533322F00EAE719 /* LoadingView.xib */,
+			);
+			name = LoadingView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -293,6 +311,7 @@
 			files = (
 				C9E3A19115309B12001F9483 /* InfoPlist.strings in Resources */,
 				C9E3A19A15309B12001F9483 /* MainStoryboard.storyboard in Resources */,
+				C9F8EEA31533322F00EAE719 /* LoadingView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -323,6 +342,7 @@
 				C90B749315323470005C7E56 /* SBJsonTokeniser.m in Sources */,
 				C90B749415323470005C7E56 /* SBJsonUTF8Stream.m in Sources */,
 				C90B749515323470005C7E56 /* SBJsonWriter.m in Sources */,
+				C9F8EEA11533319F00EAE719 /* LoadingView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

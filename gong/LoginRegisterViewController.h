@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "ServerCommunication.h"
+#import "LoadingView.h"
 
-@interface LoginRegisterViewController : UIViewController<UITextFieldDelegate, UIGestureRecognizerDelegate, UIAlertViewDelegate, ServerCommunicationDelegate>
+@interface LoginRegisterViewController : UIViewController<UITextFieldDelegate, UIGestureRecognizerDelegate, UIAlertViewDelegate, ServerCommunicationDelegate, LoadingViewDelegate>
 
 
 @property (nonatomic, retain) IBOutlet UIScrollView *scrollView;
@@ -26,7 +27,7 @@
 @property (nonatomic, retain) IBOutlet UITextField *registerPassword2TextField;
 @property (nonatomic, retain) IBOutlet UIButton *registerButton;
 
-@property (nonatomic, retain) IBOutlet UIView *loadingView;
+@property (nonatomic, retain) IBOutlet LoadingView *loadingView;
 @property (nonatomic, retain) IBOutlet UILabel *loadingLabel;
 @property (nonatomic, retain) IBOutlet UIButton *loadingCancelButton;
 
@@ -36,11 +37,6 @@ NSString* md5(NSString *str, int salt);
 
 - (IBAction)doLogin;
 - (IBAction)doRegister;
-
-- (IBAction)loadingCanceled;
-
-- (void)showLoadingViewWithText:(NSString *)text;
-- (void)hideLoadingView;
 
 - (BOOL)validateEmail:(NSString *)candidate;
 

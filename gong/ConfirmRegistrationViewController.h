@@ -7,7 +7,22 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ServerCommunication.h"
+#import "LoadingView.h"
 
-@interface ConfirmRegistrationViewController : UIViewController
+@interface ConfirmRegistrationViewController : UIViewController <UITextFieldDelegate, ServerCommunicationDelegate, UIAlertViewDelegate, LoadingViewDelegate>
+
+@property (nonatomic, retain) IBOutlet UIButton *resendCodeButton;
+@property (nonatomic, retain) IBOutlet UIButton *backToRegistrationButton;
+@property (nonatomic, retain) IBOutlet UIButton *activateEmailButton;
+@property (nonatomic, retain) IBOutlet UITextField *activationCodeTextField;
+@property (nonatomic, retain) IBOutlet LoadingView *loadingView;
+
+@property (nonatomic, retain) ServerCommunication *serverComms;
+@property (nonatomic, retain) NSString *emailAddress;
+
+- (IBAction)activateEmail;
+- (IBAction)backToRegistration;
+- (IBAction)resendCode;
 
 @end
