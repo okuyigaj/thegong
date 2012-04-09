@@ -10,9 +10,11 @@
 
 @implementation ViewController
 
-@synthesize lblDeviceToken;
+@synthesize tblFriends;
 @synthesize sc;
 @synthesize txtAuthToken;
+@synthesize friends;
+@synthesize txtNewFriend;
 
 - (void)didReceiveMemoryWarning
 {
@@ -38,6 +40,18 @@
     [sc authoriseWithAuthToken:txtAuthToken.text forEmail:@"j@jpenney.com"];
 }
 
+-(IBAction)attemptLogin{
+    [sc loginWithEmailAddress:@"j@jpenney.com" andPassword:@"password"];
+}
+
+-(IBAction)getFriendsList{
+    [sc getFriendsList];
+}
+
+-(IBAction)addNewFriend{
+    [sc addFriendWithEmailAddress:txtNewFriend.text];
+}
+
 -(void)authorisationWasSuccessful:(BOOL)_trueOrFalse withReason:(NSString *)_reason{
     if (_trueOrFalse){
         NSLog(@"Authorisation Successful!");
@@ -46,13 +60,73 @@
     }
 }
 
-
 -(void)registrationWasSuccessful:(BOOL)_trueOrFalse withReason:(NSString *)_reason{
     if (_trueOrFalse){
         NSLog(@"Registration Successful!");
     }else{
         NSLog(@"Registration Failed. Reason: %@",_reason);
     }
+}
+
+-(void)loginWasSuccessful:(BOOL)_trueOrFalse withReason:(NSString *)_reason{
+    if (_trueOrFalse){
+        NSLog(@"Login Successful!");
+    }else{
+        NSLog(@"Login Failed. Reason: %@",_reason);
+    }
+}
+
+-(void)didDownloadFriendsList:(BOOL)_trueOrFalse withReason:(NSString *)_reason andFriends:(NSArray *)_friends{
+    if (_trueOrFalse){
+        NSLog(@"Friends = %@",_friends);
+        [self.friends removeAllObjects];
+        for(NSDictionary *dict in _friends){
+            [self.friends addObject:dict];
+        }
+        [self.tblFriends reloadData];
+    }else{
+        NSLog(@"Get Friends Failed. Reason: %@",_reason);
+    }
+}
+
+-(void)didAddFriend:(BOOL)_trueOrFalse withReason:(NSString *)_reason andNewFriendsList:(NSArray *)_friends{
+    if (_trueOrFalse){
+        NSLog(@"New Friends = %@",_friends);
+        [self.friends removeAllObjects];
+        for(NSDictionary *dict in _friends){
+            [self.friends addObject:dict];
+        }
+        [self.tblFriends reloadData];
+    }else{
+        NSLog(@"Add Friend Failed. Reason: %@",_reason);
+    }
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+	return [friends count];    
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    static NSString *CellIdentifier = @"Cell";
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+    }
+    
+    NSDictionary *tempDict = [friends objectAtIndex:indexPath.row];
+	cell.textLabel.text = [tempDict objectForKey:@"username"];
+    
+    return cell;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField{
+    [textField resignFirstResponder];
+    return YES;
 }
 
 #pragma mark - View lifecycle
@@ -67,14 +141,13 @@
                                                object:nil];
     sc = [[ServerCommunication alloc] init];
     [sc setDelegate:self];
+    friends = [[NSMutableArray alloc] init];
     
 	// Do any additional setup after loading the view, typically from a nib.
 }
 
 -(void)displayDeviceToken:(NSNotification *)notification{
     NSLog(@"displaying device token");
-    NSDictionary *userInfo = [notification userInfo];
-    lblDeviceToken.text = [NSString stringWithFormat:@"%@",[userInfo objectForKey:@"deviceToken"]];
 }
 
 - (void)viewDidUnload

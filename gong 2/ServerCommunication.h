@@ -14,7 +14,9 @@
 -(void)registrationWasSuccessful:(BOOL)_trueOrFalse withReason:(NSString *)_reason;
 -(void)authorisationWasSuccessful:(BOOL)_trueOrFalse withReason:(NSString *)_reason;
 -(void)loginWasSuccessful:(BOOL)_trueOrFalse withReason:(NSString *)_reason;
--(void)didDownloadFriendsList:(BOOL)_trueOrFalse withReason:(NSString *)_reason andFriends:(NSDictionary *)_friends;
+-(void)didDownloadFriendsList:(BOOL)_trueOrFalse withReason:(NSString *)_reason andFriends:(NSArray *)_friends;
+-(void)didAddFriend:(BOOL)_trueOrFalse withReason:(NSString *)_reason andNewFriendsList:(NSArray *)_friends;
+
 @end
 
 
@@ -46,5 +48,8 @@
 -(void)registerWithUsername:(NSString *)_username email:(NSString *)_email andPassword:(NSString *)_password;
 -(void)authoriseWithAuthToken:(NSString *)token forEmail:(NSString *)email;
 -(void)loginWithEmailAddress:(NSString *)_email andPassword:(NSString *)_password;
+-(void)getFriendsList;
+-(void)addFriendWithEmailAddress:(NSString *)_email;
+
 
 @end
