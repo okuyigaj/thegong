@@ -12,7 +12,7 @@
 @implementation ServerCommunication
 
 @synthesize username, emailAddress, password, responseData, request, responseString;
-@synthesize siteURL, delegate, action, connectionIsBusy, connection;
+@synthesize siteURL, delegate, action, connectionIsBusy = _connectionIsBusy, connection;
 
 - (id)init {
   if (self = [super init]) {
@@ -21,6 +21,15 @@
     self.siteURL = @"http://www.immunis.co.uk/gong/";
   }
   return self;
+}
+
+- (void)setConnectionIsBusy:(BOOL)connectionIsBusy {
+  if (connectionIsBusy) {
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+  } else {
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+  }
+  _connectionIsBusy = connectionIsBusy;
 }
 
 - (void)updateLocalSessionKey:(NSString *)newKey{
@@ -42,7 +51,7 @@
 }
 
 - (void)registerWithUsername:(NSString *)_username email:(NSString *)_email andPassword:(NSString *)_password{
-    if(connectionIsBusy){
+    if(self.connectionIsBusy){
         [delegate registrationWasSuccessful:false withReason:@"Connection is busy"];
         return;
     }
@@ -73,7 +82,7 @@
 }
 
 -(void)authoriseWithAuthToken:(NSString *)token forEmail:(NSString *)email{
-    if(connectionIsBusy){
+    if(self.connectionIsBusy){
         [delegate authorisationWasSuccessful:false withReason:@"Connection is busy"];
         return;
     }
@@ -97,11 +106,11 @@
 }
 
 - (void)loginWithEmailAddress:(NSString *)_email andPassword:(NSString *)_password{
-    if(connectionIsBusy){
+    if(self.connectionIsBusy){
         [delegate loginWasSuccessful:false withReason:@"Connection is busy"];
         return;
     }
-    connectionIsBusy = true;
+    self.connectionIsBusy = true;
     self.emailAddress = _email;
     self.password = _password;
     self.action = @"login";
@@ -126,11 +135,11 @@
 }
 
 - (void)getFriendsList{
-    if(connectionIsBusy){
+    if(self.connectionIsBusy){
         [delegate registrationWasSuccessful:false withReason:@"Connection is busy"];
         return;
     }
-    connectionIsBusy = true;
+    self.connectionIsBusy = true;
     self.action = @"getFriends";
     
     NSString *deviceToken = [[NSUserDefaults standardUserDefaults] objectForKey:@"GONG_DEVICE_TOKEN"];
@@ -157,11 +166,11 @@
 }
 
 -(void)addFriendWithEmailAddress:(NSString *)_email{
-    if(connectionIsBusy){
+    if(self.connectionIsBusy){
         [delegate registrationWasSuccessful:false withReason:@"Connection is busy"];
         return;
     }
-    connectionIsBusy = true;
+    self.connectionIsBusy = true;
     self.action = @"addFriend";
     
     NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:@"GONG_USER_ID"];
@@ -236,22 +245,22 @@
         }
     }else if([[results objectForKey:@"action"] isEqualToString:@"login"]){
         if ([[results objectForKey:@"code"] isEqualToString:@"0"]){
-            [self updateLocalSessionKey:[results objectForKey:@"GONG_SESSION_KEY"]];
-            [self storeUserId:[results objectForKey:@"GONG_USER_ID"]];
+            [self updateLocalSessionKey:[results objectForKey:@"sessionKey"]];
+            [self storeUserId:[results objectForKey:@"userid"]];
             [self updateIsLoggedIn:YES];
             [delegate loginWasSuccessful:true withReason:nil];
         }else{
             [delegate loginWasSuccessful:false withReason:[results objectForKey:@"reason"]];
         }
     }else if([[results objectForKey:@"action"] isEqualToString:@"getFriends"]){
-        [self updateLocalSessionKey:[results objectForKey:@"GONG_SESSION_KEY"]];
+        [self updateLocalSessionKey:[results objectForKey:@"sessionKey"]];
         if ([[results objectForKey:@"code"] isEqualToString:@"0"]){
             [delegate didDownloadFriendsList:true withReason:nil andFriends:[results objectForKey:@"friends"]];
         }else{
             [delegate didDownloadFriendsList:false withReason:[results objectForKey:@"reason"] andFriends:nil];
         }
     }else if([[results objectForKey:@"action"] isEqualToString:@"addFriend"]){
-        [self updateLocalSessionKey:[results objectForKey:@"GONG_SESSION_KEY"]];
+        [self updateLocalSessionKey:[results objectForKey:@"sessionKey"]];
         if ([[results objectForKey:@"code"] isEqualToString:@"0"]){
             [delegate didAddFriend:true withReason:nil andNewFriendsList:[results objectForKey:@"friends"]];        
         }else{

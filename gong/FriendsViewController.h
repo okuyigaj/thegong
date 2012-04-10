@@ -10,6 +10,11 @@
 
 @interface FriendsViewController : UIViewController
 
+@property (nonatomic, retain) IBOutlet UITableView *friendsTableView;
+@property (nonatomic, retain) IBOutlet UIButton *backButton;
+@property (nonatomic, retain) IBOutlet UIButton *requestsButton;
+@property (nonatomic, retain) IBOutlet UIButton *addFriendButton;
+
 
 - (IBAction)backToMainView;
 

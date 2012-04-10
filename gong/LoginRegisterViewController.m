@@ -96,6 +96,24 @@ NSString* md5(NSString *str, int salt)
     [self.activeTextField resignFirstResponder];
     self.loadingView.loadingMessage = @"Logging in";
     [self.loadingView showAnimated:YES];
+    self.passwordHash = md5(self.loginPasswordTextField.text, PASSWORD_SALT);
+    self.serverComms = [[ServerCommunication alloc] init];
+    self.serverComms.delegate = self;
+    [self.serverComms loginWithEmailAddress:self.loginEmailTextField.text andPassword:self.passwordHash];
+  }
+}
+
+- (void)loginWasSuccessful:(BOOL)_trueOrFalse withReason:(NSString *)_reason {
+  if (_trueOrFalse) {
+    [self.loadingView hideAnimated:YES];
+    [self.navigationController dismissModalViewControllerAnimated:YES];
+  } else {
+    NSLog(@"Login Failed");
+    [self.loadingView hideAnimated:YES];
+    self.errorTextField = loginEmailTextField;
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Error" message:_reason delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+    av.tag = 1;
+    [av show];
   }
 }
 

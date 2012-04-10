@@ -39,7 +39,11 @@
 }
 
 - (IBAction)CancelButtonPressed {
-  [delegate LoadingViewCancelButtonWasPressed];
+  if ([delegate respondsToSelector:@selector(LoadingViewCancelButtonWasPressed)]) {
+    [delegate LoadingViewCancelButtonWasPressed];
+  } else {
+    NSLog(@"Delegate hasn't implemented cancel button!");
+  }
 }
 
 - (void)setLoadingMessage:(NSString *)loadingMessage {
@@ -49,12 +53,12 @@
 - (void)showAnimated:(BOOL)animated {
   if (animated) {
     self.hidden = NO;
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent animated:YES];
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
     [UIView animateWithDuration:0.5f animations:^{self.alpha=0.8f;} completion:^(BOOL b){}];
   } else {
     self.hidden = NO;
     self.alpha = 0.8f;
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent animated:NO];
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:NO];
   }
 }
 

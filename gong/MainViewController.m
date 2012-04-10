@@ -21,6 +21,13 @@
   [[NSUserDefaults standardUserDefaults] setBool:isLoggedIn forKey:@"GONG_IS_LOGGED_IN"];
 }
 
+- (IBAction)logout {
+  self.isLoggedIn = NO;
+  [self performSegueWithIdentifier:@"ShowLoginRegisterView" sender:self];
+  [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"GONG_USER_ID"];
+  [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"GONG_SESSION_KEY"];
+}
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -41,6 +48,8 @@
 #pragma mark - View lifecycle
 
 - (void)viewDidAppear:(BOOL)animated {
+  self.navigationController.navigationBarHidden = YES;
+  self.navigationController.toolbarHidden = YES;
   if (!self.isLoggedIn) {
     [self performSegueWithIdentifier:@"ShowLoginRegisterView" sender:self];
   } else {

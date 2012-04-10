@@ -8,12 +8,25 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "gong/ServerCommunication.m"
-         timestampString = "355681332.515515"
+         timestampString = "355690082.278271"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "45"
-         endingLineNumber = "45"
+         startingLineNumber = "54"
+         endingLineNumber = "54"
          landmarkName = "-registerWithUsername:email:andPassword:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "gong/LoginRegisterViewController.m"
+         timestampString = "355687129.108952"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "167"
+         endingLineNumber = "167"
+         landmarkName = "-registrationWasSuccessful:withReason:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -21,12 +34,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "gong/ServerCommunication.m"
-         timestampString = "355681332.515515"
+         timestampString = "355690082.278271"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "217"
-         endingLineNumber = "217"
-         landmarkName = "-connectionDidFinishLoading:"
+         startingLineNumber = "169"
+         endingLineNumber = "169"
+         landmarkName = "-addFriendWithEmailAddress:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

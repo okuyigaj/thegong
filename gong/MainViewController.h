@@ -16,4 +16,6 @@
 @property (nonatomic, retain) IBOutlet UIButton *friendsButton;
 @property (nonatomic, retain) IBOutlet UIButton *gongButton;
 
+- (IBAction)logout;
+
 @end
