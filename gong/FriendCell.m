@@ -10,6 +10,8 @@
 
 @implementation FriendCell
 
+@synthesize friendRequestButton, friendEmailAddress, friendName, delegate;
+
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -17,6 +19,12 @@
         // Initialization code
     }
     return self;
+}
+
+- (IBAction)friendRequestButtonPressed {
+  if ([delegate respondsToSelector:@selector(requestButtonPressedForFriendCell:)]) {
+    [delegate requestButtonPressedForFriendCell:self];
+  }
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

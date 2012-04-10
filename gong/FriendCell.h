@@ -8,11 +8,21 @@
 
 #import <UIKit/UIKit.h>
 
+@class FriendCell;
+
+@protocol FriendCellDelegate <NSObject>
+
+@optional
+- (void)requestButtonPressedForFriendCell:(FriendCell *)cell;
+
+@end
+
 @interface FriendCell : UITableViewCell
 
 @property (nonatomic, retain) IBOutlet UILabel *friendName;
 @property (nonatomic, retain) IBOutlet UILabel *friendEmailAddress;
 @property (nonatomic, retain) IBOutlet UIButton *friendRequestButton;
+@property (nonatomic, assign) id<FriendCellDelegate> delegate;
 
 - (IBAction)friendRequestButtonPressed;
 

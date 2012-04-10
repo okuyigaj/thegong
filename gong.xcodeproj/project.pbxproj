@@ -20,7 +20,9 @@
 		C90B749415323470005C7E56 /* SBJsonUTF8Stream.m in Sources */ = {isa = PBXBuildFile; fileRef = C90B748715323470005C7E56 /* SBJsonUTF8Stream.m */; };
 		C90B749515323470005C7E56 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = C90B748915323470005C7E56 /* SBJsonWriter.m */; };
 		C962632D15346065005652C0 /* FriendCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C962632C15346065005652C0 /* FriendCell.m */; };
+		C962633515347851005652C0 /* DataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C962633415347851005652C0 /* DataModel.m */; };
 		C9AB906A153229AA00852A61 /* ServerCommunication.m in Sources */ = {isa = PBXBuildFile; fileRef = C9AB9069153229AA00852A61 /* ServerCommunication.m */; };
+		C9DCC34A1534AD66005B5772 /* Friend.m in Sources */ = {isa = PBXBuildFile; fileRef = C9DCC3491534AD65005B5772 /* Friend.m */; };
 		C9E3A18715309B12001F9483 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9E3A18615309B12001F9483 /* UIKit.framework */; };
 		C9E3A18915309B12001F9483 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9E3A18815309B12001F9483 /* Foundation.framework */; };
 		C9E3A18B15309B12001F9483 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9E3A18A15309B12001F9483 /* CoreGraphics.framework */; };
@@ -67,8 +69,12 @@
 		C90B748915323470005C7E56 /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
 		C962632B15346065005652C0 /* FriendCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendCell.h; sourceTree = "<group>"; };
 		C962632C15346065005652C0 /* FriendCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendCell.m; sourceTree = "<group>"; };
+		C962633315347851005652C0 /* DataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataModel.h; sourceTree = "<group>"; };
+		C962633415347851005652C0 /* DataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataModel.m; sourceTree = "<group>"; };
 		C9AB9068153229AA00852A61 /* ServerCommunication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServerCommunication.h; sourceTree = "<group>"; };
 		C9AB9069153229AA00852A61 /* ServerCommunication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ServerCommunication.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		C9DCC3481534AD65005B5772 /* Friend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Friend.h; sourceTree = "<group>"; };
+		C9DCC3491534AD65005B5772 /* Friend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Friend.m; sourceTree = "<group>"; };
 		C9E3A18215309B12001F9483 /* gong.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = gong.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9E3A18615309B12001F9483 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		C9E3A18815309B12001F9483 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -113,6 +119,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C96263321534783F005652C0 /* DataModel */ = {
+			isa = PBXGroup;
+			children = (
+				C9F8EEA415335B8000EAE719 /* Gong.xcdatamodeld */,
+				C9DCC3481534AD65005B5772 /* Friend.h */,
+				C9DCC3491534AD65005B5772 /* Friend.m */,
+				C962633315347851005652C0 /* DataModel.h */,
+				C962633415347851005652C0 /* DataModel.m */,
+			);
+			name = DataModel;
+			sourceTree = "<group>";
+		};
 		C9AB9053153224CD00852A61 /* JSON */ = {
 			isa = PBXGroup;
 			children = (
@@ -185,6 +203,7 @@
 		C9E3A18C15309B12001F9483 /* gong */ = {
 			isa = PBXGroup;
 			children = (
+				C96263321534783F005652C0 /* DataModel */,
 				C9F8EE9E1533318700EAE719 /* LoadingView */,
 				C9AB9062153224E600852A61 /* ServerCommunication */,
 				C9AB9053153224CD00852A61 /* JSON */,
@@ -209,7 +228,6 @@
 				C9E3A19215309B12001F9483 /* main.m */,
 				C9E3A19415309B12001F9483 /* gong-Prefix.pch */,
 				C9F8EE9C1533304A00EAE719 /* Constants.h */,
-				C9F8EEA415335B8000EAE719 /* Gong.xcdatamodeld */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -357,6 +375,8 @@
 				C9F8EEA11533319F00EAE719 /* LoadingView.m in Sources */,
 				C9F8EEA615335B8000EAE719 /* Gong.xcdatamodeld in Sources */,
 				C962632D15346065005652C0 /* FriendCell.m in Sources */,
+				C962633515347851005652C0 /* DataModel.m in Sources */,
+				C9DCC34A1534AD66005B5772 /* Friend.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
