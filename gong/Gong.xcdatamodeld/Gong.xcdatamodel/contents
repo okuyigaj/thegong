@@ -3,13 +3,14 @@
     <entity name="Friend" representedClassName="Friend" syncable="YES">
         <attribute name="displayName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="emailAddress" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="relationship" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="userId" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="Gong" syncable="YES">
         <attribute name="when" optional="YES" attributeType="Date" syncable="YES"/>
     </entity>
     <elements>
+        <element name="Friend" positionX="160" positionY="192" width="128" height="105"/>
         <element name="Gong" positionX="160" positionY="192" width="128" height="60"/>
-        <element name="Friend" positionX="160" positionY="192" width="128" height="90"/>
     </elements>
 </model>

@@ -162,6 +162,12 @@ NSString* md5(NSString *str, int salt)
   //Callback from registration server-comms.
   if (_trueOrFalse) {
     [self.loadingView hideAnimated:YES];
+    //save registration info
+    [[NSUserDefaults standardUserDefaults] setObject:self.registerEmailTextField.text forKey:@"GONG_REGISTER_EMAIL"];
+    [[NSUserDefaults standardUserDefaults] setObject:self.registerDisplayNameTextField.text forKey:@"GONG_REGISTER_DISPLAYNAME"];
+    [[NSUserDefaults standardUserDefaults] setObject:self.passwordHash forKey:@"GONG_REGISTER_PASSWORDHASH"];    
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"GONG_REGISTER_WAITING_FOR_ACTIVATION"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
     [self performSegueWithIdentifier:@"ShowAuthorizeEmailView" sender:self];
   } else {
     [self.loadingView hideAnimated:YES];
@@ -211,6 +217,18 @@ NSString* md5(NSString *str, int salt)
                                              name:UIKeyboardWillHideNotification
                                            object:nil];
   
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+  //Check to see if the user has registered and just needs to enter activation code.
+  if ([[NSUserDefaults standardUserDefaults] boolForKey:@"GONG_REGISTER_WAITING_FOR_ACTIVATION"]) {
+    //fill in the fields and show move to the activation screen.
+    self.registerDisplayNameTextField.text = [[NSUserDefaults standardUserDefaults] objectForKey:@"GONG_REGISTER_DISPLAYNAME"];
+    self.registerEmailTextField.text = [[NSUserDefaults standardUserDefaults] objectForKey:@"GONG_REGISTER_EMAIL"];
+    self.passwordHash = [[NSUserDefaults standardUserDefaults] objectForKey:@"GONG_REGISTER_PASSWORDHASH"];
+
+    [self performSegueWithIdentifier:@"ShowAuthorizeEmailView" sender:self];
+  }
 }
 
 - (void)LoadingViewCancelButtonWasPressed {

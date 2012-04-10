@@ -19,6 +19,7 @@
 		C90B749315323470005C7E56 /* SBJsonTokeniser.m in Sources */ = {isa = PBXBuildFile; fileRef = C90B748515323470005C7E56 /* SBJsonTokeniser.m */; };
 		C90B749415323470005C7E56 /* SBJsonUTF8Stream.m in Sources */ = {isa = PBXBuildFile; fileRef = C90B748715323470005C7E56 /* SBJsonUTF8Stream.m */; };
 		C90B749515323470005C7E56 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = C90B748915323470005C7E56 /* SBJsonWriter.m */; };
+		C962632D15346065005652C0 /* FriendCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C962632C15346065005652C0 /* FriendCell.m */; };
 		C9AB906A153229AA00852A61 /* ServerCommunication.m in Sources */ = {isa = PBXBuildFile; fileRef = C9AB9069153229AA00852A61 /* ServerCommunication.m */; };
 		C9E3A18715309B12001F9483 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9E3A18615309B12001F9483 /* UIKit.framework */; };
 		C9E3A18915309B12001F9483 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9E3A18815309B12001F9483 /* Foundation.framework */; };
@@ -36,7 +37,6 @@
 		C9F8EEA31533322F00EAE719 /* LoadingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9F8EEA21533322F00EAE719 /* LoadingView.xib */; };
 		C9F8EEA615335B8000EAE719 /* Gong.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C9F8EEA415335B8000EAE719 /* Gong.xcdatamodeld */; };
 		C9F8EEA815335BD900EAE719 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9F8EEA715335BD900EAE719 /* CoreData.framework */; };
-		C9F8EEAB15335D6D00EAE719 /* Friend.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F8EEAA15335D6D00EAE719 /* Friend.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -65,6 +65,8 @@
 		C90B748715323470005C7E56 /* SBJsonUTF8Stream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonUTF8Stream.m; sourceTree = "<group>"; };
 		C90B748815323470005C7E56 /* SBJsonWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
 		C90B748915323470005C7E56 /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
+		C962632B15346065005652C0 /* FriendCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendCell.h; sourceTree = "<group>"; };
+		C962632C15346065005652C0 /* FriendCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendCell.m; sourceTree = "<group>"; };
 		C9AB9068153229AA00852A61 /* ServerCommunication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServerCommunication.h; sourceTree = "<group>"; };
 		C9AB9069153229AA00852A61 /* ServerCommunication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ServerCommunication.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		C9E3A18215309B12001F9483 /* gong.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = gong.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -94,8 +96,6 @@
 		C9F8EEA21533322F00EAE719 /* LoadingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingView.xib; sourceTree = "<group>"; };
 		C9F8EEA515335B8000EAE719 /* Gong.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Gong.xcdatamodel; sourceTree = "<group>"; };
 		C9F8EEA715335BD900EAE719 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		C9F8EEA915335D6D00EAE719 /* Friend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Friend.h; sourceTree = "<group>"; };
-		C9F8EEAA15335D6D00EAE719 /* Friend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Friend.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -190,8 +190,8 @@
 				C9AB9053153224CD00852A61 /* JSON */,
 				C9E3A1B41530A752001F9483 /* AddFriendViewController */,
 				C9E3A1B01530A36E001F9483 /* ConfirmRegistrationViewController */,
-				C9E3A1AC1530A015001F9483 /* FriendsViewController */,
 				C9E3A1A815309E87001F9483 /* LoginRegisterViewController */,
+				C9E3A1AC1530A015001F9483 /* FriendsViewController */,
 				C9E3A1A615309D6E001F9483 /* MainViewController */,
 				C9E3A19515309B12001F9483 /* AppDelegate.h */,
 				C9E3A19615309B12001F9483 /* AppDelegate.m */,
@@ -210,8 +210,6 @@
 				C9E3A19415309B12001F9483 /* gong-Prefix.pch */,
 				C9F8EE9C1533304A00EAE719 /* Constants.h */,
 				C9F8EEA415335B8000EAE719 /* Gong.xcdatamodeld */,
-				C9F8EEA915335D6D00EAE719 /* Friend.h */,
-				C9F8EEAA15335D6D00EAE719 /* Friend.m */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -239,6 +237,8 @@
 			children = (
 				C9E3A1AD1530A02B001F9483 /* FriendsViewController.h */,
 				C9E3A1AE1530A02B001F9483 /* FriendsViewController.m */,
+				C962632B15346065005652C0 /* FriendCell.h */,
+				C962632C15346065005652C0 /* FriendCell.m */,
 			);
 			name = FriendsViewController;
 			sourceTree = "<group>";
@@ -356,7 +356,7 @@
 				C90B749515323470005C7E56 /* SBJsonWriter.m in Sources */,
 				C9F8EEA11533319F00EAE719 /* LoadingView.m in Sources */,
 				C9F8EEA615335B8000EAE719 /* Gong.xcdatamodeld in Sources */,
-				C9F8EEAB15335D6D00EAE719 /* Friend.m in Sources */,
+				C962632D15346065005652C0 /* FriendCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

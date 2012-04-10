@@ -17,15 +17,15 @@
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
+         shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "gong/LoginRegisterViewController.m"
-         timestampString = "355687129.108952"
+         timestampString = "355753738.754594"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "167"
-         endingLineNumber = "167"
+         startingLineNumber = "173"
+         endingLineNumber = "173"
          landmarkName = "-registrationWasSuccessful:withReason:"
          landmarkType = "5">
       </FileBreakpoint>

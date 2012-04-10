@@ -50,14 +50,20 @@
 }
 
 - (IBAction)backToRegistration {
+  [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"GONG_REGISTER_WAITING_FOR_ACTIVATION"];
   [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)authorisationWasSuccessful:(BOOL)_trueOrFalse withReason:(NSString *)_reason {
   if (_trueOrFalse) {
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"GONG_REGISTER_WAITING_FOR_ACTIVATION"];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"GONG_REGISTER_EMAIL"];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"GONG_REGISTER_DISPLAYNAME"];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"GONG_REGISTER_PASSWORDHASH"];
     self.loadingView.loadingMessage = @"Logging in";
     [self.serverComms loginWithEmailAddress:self.emailAddress andPassword:self.passwordHash];
   } else {
+    [self.loadingView hideAnimated:YES];
     UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Error" message:_reason delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
     av.tag = 0;
     [av show];
@@ -69,6 +75,7 @@
     [self.loadingView hideAnimated:YES];
     [self.navigationController dismissModalViewControllerAnimated:YES];
   } else {
+    [self.loadingView hideAnimated:YES];
     UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Error" message:_reason delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
     av.tag = 1;
     [av show];
