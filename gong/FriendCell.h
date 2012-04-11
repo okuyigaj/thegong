@@ -22,6 +22,7 @@
 @property (nonatomic, retain) IBOutlet UILabel *friendName;
 @property (nonatomic, retain) IBOutlet UILabel *friendEmailAddress;
 @property (nonatomic, retain) IBOutlet UIButton *friendRequestButton;
+@property (nonatomic, retain) NSString *friendshipId;
 @property (nonatomic, assign) id<FriendCellDelegate> delegate;
 
 - (IBAction)friendRequestButtonPressed;

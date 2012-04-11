@@ -10,7 +10,7 @@
 
 @implementation FriendCell
 
-@synthesize friendRequestButton, friendEmailAddress, friendName, delegate;
+@synthesize friendRequestButton, friendEmailAddress, friendName, friendshipId, delegate;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {

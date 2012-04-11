@@ -49,6 +49,12 @@
     self.requestsTableView.hidden = YES;
     self.friendsTableView.hidden = NO;
   }
+  NSError *error;
+  if (![self.activeResultsController performFetch:&error]) {
+    NSLog(@"Error performing Fetch");
+  } else {
+    [self.activeTableView reloadData];
+  }
 }
 
 - (void)changeTitleForButton:(UIButton *)button toString:(NSString *)string {
@@ -89,21 +95,21 @@
 
   if (_allFriendsResultsController == nil) {
   
+    NSManagedObjectContext *context = self.managedObjectContext;
+  
     NSFetchRequest *fetchRequest = nil;
     fetchRequest = [[NSFetchRequest alloc] init]; NSEntityDescription *entity = nil;
     entity = [NSEntityDescription entityForName:@"Friend" 
-                         inManagedObjectContext:self.managedObjectContext];
+              inManagedObjectContext:context];
     [fetchRequest setEntity:entity];
-    [fetchRequest setFetchBatchSize:20];
     NSSortDescriptor *sortDescriptor = nil;
-    sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"DisplayName" ascending:YES];
+    sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"friendshipId" ascending:YES];
     NSArray *sortDescriptors = nil;
     sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
-    [fetchRequest setSortDescriptors:sortDescriptors];
-    
+    [fetchRequest setSortDescriptors:sortDescriptors];    
     NSFetchedResultsController *frc = nil;
-    frc = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:[self managedObjectContext] 
-                                              sectionNameKeyPath:@"initial" cacheName:@"AllFriends"];
+    frc = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:context
+                                              sectionNameKeyPath:@"initial" cacheName:nil];
     frc.delegate = self;
     _allFriendsResultsController = frc;
     
@@ -116,14 +122,17 @@
 
   if (_requestsResultsController == nil) {
   
+  
+    NSManagedObjectContext *context = self.managedObjectContext;
+  
     NSFetchRequest *fetchRequest = nil;
     fetchRequest = [[NSFetchRequest alloc] init]; NSEntityDescription *entity = nil;
     entity = [NSEntityDescription entityForName:@"Friend" 
-                         inManagedObjectContext:self.managedObjectContext];
+                         inManagedObjectContext:context];
     [fetchRequest setEntity:entity];
     [fetchRequest setFetchBatchSize:20];
     NSSortDescriptor *sortDescriptor = nil;
-    sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"DisplayName" ascending:YES];
+    sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"displayName" ascending:YES];
     NSArray *sortDescriptors = nil;
     sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"relationship != 0"];
@@ -131,8 +140,8 @@
     [fetchRequest setSortDescriptors:sortDescriptors];
     
     NSFetchedResultsController *frc = nil;
-    frc = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:[self managedObjectContext] 
-                                              sectionNameKeyPath:@"initial" cacheName:@"Requests"];
+    frc = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:context 
+                                              sectionNameKeyPath:@"initial" cacheName:nil];
     frc.delegate = self;
     _requestsResultsController = frc;
     
@@ -148,7 +157,9 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView {
-  return [self resultsControllerForTableView:tableView].sections.count;
+  int c = self.allFriendsResultsController.sections.count;
+  NSLog(@"Sections: %d", c);
+  return c;
 }
 
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath {
@@ -163,6 +174,7 @@
   
   cell.friendName.text = friend.displayName;
   cell.friendEmailAddress.text = friend.emailAddress;
+  cell.friendshipId = friend.friendshipId;
   
   switch (friend.relationship.intValue) {
   case 0:
@@ -181,6 +193,10 @@
     break;
   }
   
+}
+
+- (void)requestButtonPressedForFriendCell:(FriendCell *)cell {
+  //Tell the server to update the friendship.
 }
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
@@ -244,6 +260,12 @@
 }
 
 - (void)viewDidAppear:(BOOL)animated {
+  NSError *error;
+  if (![self.activeResultsController performFetch:&error]) {
+    NSLog(@"Error Fetching Friends");
+  } else {
+    [self.activeTableView reloadData];
+  }
   self.serverComms = [[ServerCommunication alloc] init];
   self.serverComms.delegate = self;
   [self.serverComms getFriendsList];
@@ -318,79 +340,68 @@
   
   Friend *oldFriend, *f;
   NSDictionary *newFriend;
+  NSComparisonResult comparisonResult = NSOrderedSame;
   
-  if (oldFriends.count == 0) {
-  
-      for (NSDictionary *fr in friends) {
-  
-        //NO FRIENDS, JUST INSERT THEM ALL (HAVE COPY-PASTED CODE :()
-        //INSERT NEW FRIEND
-        f = [NSEntityDescription insertNewObjectForEntityForName:@"Friend" inManagedObjectContext:context];
-        f.displayName = [fr objectForKey:@"username"];
-        f.emailAddress = [fr objectForKey:@"email"];
-        f.userId = [fr objectForKey:@"id"];
-        f.friendshipId = [fr objectForKey:@"friendship_id"];
-        if ([[fr objectForKey:@"verified"] isEqualToString:@"yes"]) {
-          f.relationship = [NSNumber numberWithInt:0];
-        } else {
-          if ([[fr objectForKey:@"userOwned"] isEqualToString:@"yes"]) {
-            f.relationship = [NSNumber numberWithInt:2];
-          } else {
-            f.relationship = [NSNumber numberWithInt:1];
-          }
-        }
-        if (![context save:&error]) {NSLog(@"Error Inserting Friend:%@", f.displayName);}
-      }
-  } else {
-  
-  
+  while (i < friends.count || j < oldFriends.count) {
 
-      
-    while (i < friends.count && j < oldFriends.count) {
-
+    if (i < friends.count) {
       newFriend = [friends objectAtIndex:i];
-      oldFriend = [oldFriends objectAtIndex:j];
-
-      switch ([[newFriend objectForKey:@"friendship_id"] compare:oldFriend.friendshipId options:0]) {
-      
-      case NSOrderedAscending:
-        //INSERT NEW FRIEND
-        f = [NSEntityDescription insertNewObjectForEntityForName:@"Friend" inManagedObjectContext:context];
-        f.displayName = [newFriend objectForKey:@"username"];
-        f.emailAddress = [newFriend objectForKey:@"email"];
-        f.userId = [newFriend objectForKey:@"id"];
-        f.friendshipId = [newFriend objectForKey:@"friendship_id"];
-        if ([[newFriend objectForKey:@"verified"] isEqualToString:@"yes"]) {
-          f.relationship = [NSNumber numberWithInt:0];
-        } else {
-          if ([[newFriend objectForKey:@"userOwned"] isEqualToString:@"yes"]) {
-            f.relationship = [NSNumber numberWithInt:2];
-          } else {
-            f.relationship = [NSNumber numberWithInt:1];
-          }
-        }
-        if (![context save:&error]) {NSLog(@"Error Inserting Friend:%@", f.displayName);}
-        i = i + 1;
-        break;
-      case NSOrderedDescending:
-        //DELETE OLD FRIEND
-        [context deleteObject:oldFriend];
-        if (![context save:&error]) {NSLog(@"Error Deleting Friend:%@", oldFriend.displayName);}
-        j = j + 1;
-        break;
-      case NSOrderedSame:
-        //UPDATE EXISTING FRIEND
-        oldFriend.displayName = [newFriend objectForKey:@"username"];
-        oldFriend.emailAddress = [newFriend objectForKey:@"email"];
-        if ([[newFriend objectForKey:@"verified"] isEqualToString:@"yes"]) {
-          oldFriend.relationship = [NSNumber numberWithInt:0];
-        }
-        if (![context save:&error]) {NSLog(@"Error Updating Friend:%@", oldFriend.displayName);}
-        j = j + 1; i = i + 1;
-        break;
-      } 
-            
+    } else {
+      comparisonResult = NSOrderedDescending;
     }
+    
+    if (j < oldFriends.count) {
+      oldFriend = [oldFriends objectAtIndex:j];
+    } else {
+      comparisonResult = NSOrderedAscending;
+    }
+    
+    if (i < friends.count && j < oldFriends.count) {
+      comparisonResult = [[newFriend objectForKey:@"friendship_id"] compare:oldFriend.friendshipId options:0];
+    }
+
+    switch (comparisonResult) {
+    
+    case NSOrderedAscending:
+      //INSERT NEW FRIEND
+      f = [NSEntityDescription insertNewObjectForEntityForName:@"Friend" inManagedObjectContext:context];
+      f.displayName = [newFriend objectForKey:@"username"];
+      f.emailAddress = [newFriend objectForKey:@"email"];
+      f.userId = [newFriend objectForKey:@"id"];
+      f.friendshipId = [newFriend objectForKey:@"friendship_id"];
+      if ([[newFriend objectForKey:@"verified"] isEqualToString:@"yes"]) {
+        f.relationship = [NSNumber numberWithInt:0];
+      } else {
+        if ([[newFriend objectForKey:@"userOwned"] isEqualToString:@"yes"]) {
+          f.relationship = [NSNumber numberWithInt:2];
+        } else {
+          f.relationship = [NSNumber numberWithInt:1];
+        }
+      }
+      if (![context save:&error]) {NSLog(@"Error Inserting Friend:%@", f.displayName);}
+      NSLog(@"Inserted new Friend:%@", f.displayName);
+      i = i + 1;
+      break;
+    case NSOrderedDescending:
+      //DELETE OLD FRIEND
+      [context deleteObject:oldFriend];
+      if (![context save:&error]) {NSLog(@"Error Deleting Friend:%@", oldFriend.displayName);}
+      NSLog(@"Deleted Old Friend:%@", oldFriend.displayName);
+      j = j + 1;
+      break;
+    case NSOrderedSame:
+      //UPDATE EXISTING FRIEND
+      oldFriend.displayName = [newFriend objectForKey:@"username"];
+      oldFriend.emailAddress = [newFriend objectForKey:@"email"];
+      if ([[newFriend objectForKey:@"verified"] isEqualToString:@"yes"]) {
+        oldFriend.relationship = [NSNumber numberWithInt:0];
+      }
+      if (![context save:&error]) {NSLog(@"Error Updating Friend:%@", oldFriend.displayName);}
+      NSLog(@"Updated Existing Friend:%@", oldFriend.displayName);
+      j = j + 1; i = i + 1;
+      break;
+    } 
+          
   }
   //NOW WE'RE DONE. UI SHOULD HAVE AUTOMAGICALLY BEEN UPDATED.
   dispatch_async(dispatch_get_main_queue(), ^{
