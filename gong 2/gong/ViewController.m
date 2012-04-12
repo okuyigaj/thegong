@@ -32,6 +32,8 @@
       UIRemoteNotificationTypeSound)];
 }
 
+////////////// BUTTON FUNCTIONS
+
 -(IBAction)tryRegistration{
     [sc registerWithUsername:@"jjpenney" email:@"j@jpenney.com" andPassword:@"password"];
 }
@@ -51,6 +53,13 @@
 -(IBAction)addNewFriend{
     [sc addFriendWithEmailAddress:txtNewFriend.text];
 }
+
+
+///////////// END BUTTON FUNCTIONS
+
+
+
+///////////// DELEGATE METHODS
 
 -(void)authorisationWasSuccessful:(BOOL)_trueOrFalse withReason:(NSString *)_reason{
     if (_trueOrFalse){
@@ -101,6 +110,14 @@
         NSLog(@"Add Friend Failed. Reason: %@",_reason);
     }
 }
+
+
+
+
+///////////// END DELEGATE METHODS
+
+
+
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	return [friends count];    
