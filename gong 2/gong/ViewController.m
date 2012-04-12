@@ -54,6 +54,15 @@
     [sc addFriendWithEmailAddress:txtNewFriend.text];
 }
 
+-(void)deleteFriendAtIndex:(NSIndexPath *)indexPath{
+    NSDictionary *tempDict = [self.friends objectAtIndex:indexPath.row];
+    [sc deleteFriendWithFriendshipId:[tempDict objectForKey:@"friendship_id"]];
+}
+
+-(void)acceptFriendAtIndex:(NSIndexPath *)indexPath{
+    NSDictionary *tempDict = [self.friends objectAtIndex:indexPath.row];
+    [sc acceptFriendWithFriendshipId:[tempDict objectForKey:@"friendship_id"]];
+}
 
 ///////////// END BUTTON FUNCTIONS
 
@@ -111,7 +120,33 @@
     }
 }
 
+-(void)didDeleteFriend:(BOOL)_trueOrFalse withReason:(NSString *)_reason andNewFriendsList:(NSArray *)_friends{
+    if (_trueOrFalse){
+        NSLog(@"New Friends = %@",_friends);
+        [self.friends removeAllObjects];
+        for(NSDictionary *dict in _friends){
+            [self.friends addObject:dict];
+        }
+        [self.tblFriends reloadData];
+    }else{
+        NSLog(@"Delete Friend Failed. Reason: %@",_reason);
+        [self.tblFriends reloadData];
+    }
+}
 
+
+-(void)didAcceptFriend:(BOOL)_trueOrFalse withReason:(NSString *)_reason andNewFriendsList:(NSArray *)_friends{
+    if (_trueOrFalse){
+        NSLog(@"New Friends = %@",_friends);
+        [self.friends removeAllObjects];
+        for(NSDictionary *dict in _friends){
+            [self.friends addObject:dict];
+        }
+        [self.tblFriends reloadData];
+    }else{
+        NSLog(@"Accept Friend Failed. Reason: %@",_reason);
+    }
+}
 
 
 ///////////// END DELEGATE METHODS
@@ -128,22 +163,47 @@
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier] autorelease];
     }
     
     NSDictionary *tempDict = [friends objectAtIndex:indexPath.row];
 	cell.textLabel.text = [tempDict objectForKey:@"username"];
+    
+    if([[tempDict objectForKey:@"userOwned"]isEqualToString:@"yes"]
+       &&[[tempDict objectForKey:@"verified"]isEqualToString:@"no"]){
+        cell.detailTextLabel.text= @"Pending";
+        
+    }else if([[tempDict objectForKey:@"userOwned"]isEqualToString:@"no"]
+             &&[[tempDict objectForKey:@"verified"]isEqualToString:@"no"]){
+        cell.detailTextLabel.text= @"Accept?";
+    }else{
+        cell.detailTextLabel.text= @"Verified";
+    }
     
     return cell;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+    NSDictionary *tempDict = [friends objectAtIndex:indexPath.row];
+    
+    if([[tempDict objectForKey:@"userOwned"]isEqualToString:@"no"]
+       &&[[tempDict objectForKey:@"verified"]isEqualToString:@"no"]){
+        [self acceptFriendAtIndex:indexPath];
+    }
 }
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{
     [textField resignFirstResponder];
     return YES;
+}
+
+-(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
+    if(editingStyle==UITableViewCellEditingStyleDelete){
+        [self.friends removeObjectAtIndex:indexPath.row];
+        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:YES];
+        [self deleteFriendAtIndex:indexPath];
+    }
 }
 
 #pragma mark - View lifecycle
