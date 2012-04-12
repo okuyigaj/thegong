@@ -35,15 +35,15 @@
 ////////////// BUTTON FUNCTIONS
 
 -(IBAction)tryRegistration{
-    [sc registerWithUsername:@"jjpenney" email:@"j@jpenney.com" andPassword:@"password"];
+    [sc registerWithUsername:@"jjpenney" email:@"james@jpenney.com" andPassword:@"password"];
 }
 
 -(IBAction)tryAuth{
-    [sc authoriseWithAuthToken:txtAuthToken.text forEmail:@"j@jpenney.com"];
+    [sc authoriseWithAuthToken:txtAuthToken.text forEmail:@"james@jpenney.com"];
 }
 
 -(IBAction)attemptLogin{
-    [sc loginWithEmailAddress:@"j@jpenney.com" andPassword:@"password"];
+    [sc loginWithEmailAddress:@"james@jpenney.com" andPassword:@"password"];
 }
 
 -(IBAction)getFriendsList{

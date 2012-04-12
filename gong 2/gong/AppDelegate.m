@@ -37,18 +37,8 @@
 
 - (void)application:(UIApplication *)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken { 
     
-    NSString *str = [NSString stringWithFormat:@"Device Token=%@",deviceToken];    
-    NSLog(@"%@",str);
-    
-    NSDictionary *userInfo = [NSDictionary dictionaryWithObject:deviceToken forKey:@"deviceToken"];
-    
-    [[NSNotificationCenter defaultCenter] 
-     postNotificationName:@"didReceiveDeviceToken" 
-     object:self
-    userInfo:userInfo];
-    
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    [userDefaults setObject:deviceToken forKey:@"deviceToken"];
+    [userDefaults setObject:deviceToken forKey:@"GONG_DEVICE_TOKEN"];
     [userDefaults synchronize];
     
 }
