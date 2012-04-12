@@ -30,8 +30,8 @@
 - (void)application:(UIApplication *)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken { 
  
     NSString *str = [NSString 
-        stringWithFormat:@"Device Token=%@",deviceToken];
-    NSLog(@"%@",str);
+        stringWithFormat:@"%@",deviceToken];
+    NSLog(@"Device Token = %@",str);
     [[NSUserDefaults standardUserDefaults] setValue:str forKey:@"GONG_DEVICE_TOKEN"]; 
 }
  
