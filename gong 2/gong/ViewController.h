@@ -27,5 +27,6 @@
 -(IBAction)tryRegistration;
 -(IBAction)attemptLogin;
 -(IBAction)getFriendsList;
+-(IBAction)gongThoseBitches;
 
 @end

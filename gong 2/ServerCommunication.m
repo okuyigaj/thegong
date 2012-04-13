@@ -249,6 +249,36 @@
     self.connection = [[NSURLConnection alloc] initWithRequest:postRequest delegate:self];
 }
 
+-(void)sendNotificationWithMessage:(NSString *)msg badge:(NSString *)_badge andSound:(NSString *)_sound{
+    if(self.connectionIsBusy){
+        [delegate registrationWasSuccessful:false withReason:@"Connection is busy"];
+        return;
+    }
+    self.connectionIsBusy = true;
+    self.action = @"notify";
+    
+    NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:@"GONG_USER_ID"];
+    NSString *sessionKey = [[NSUserDefaults standardUserDefaults] objectForKey:@"GONG_SESSION_KEY"];
+    
+    NSString *post = [NSString stringWithFormat:@"action=notify&sender=%@&sessionKey=%@&msg=%@&badge=%@&sound=%@",
+                      userId,
+                      sessionKey,
+                      msg,
+                      _badge,
+                      _sound];
+    
+    NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+    NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
+    NSMutableURLRequest *postRequest = [[NSMutableURLRequest alloc] init];
+    [postRequest setURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@action.php",siteURL]]];
+    [postRequest setHTTPMethod:@"POST"];
+    [postRequest setValue:postLength forHTTPHeaderField:@"Content-Length"];
+    [postRequest setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+    [postRequest setHTTPBody:postData];
+    
+    self.connection = [[NSURLConnection alloc] initWithRequest:postRequest delegate:self];
+}
+
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
     self.responseData = [[NSMutableData alloc] init];
 	[self.responseData setLength:0];
@@ -273,6 +303,11 @@
         [delegate didDeleteFriend:false withReason:@"Connection to server failed" andNewFriendsList:nil];        
     }else if([action isEqualToString:@"acceptFriend"]){
         [delegate didAcceptFriend:false withReason:@"Connection to server failed" andNewFriendsList:nil];        
+    }else if([action isEqualToString:@"notify"]){
+        [delegate didNotifyFriends:false
+                        withReason:@"Connection to server failed"
+                  deliveryAttempts:0
+                 deliverySuccesses:0];
     }
 }
 
@@ -339,6 +374,19 @@
             [delegate didAcceptFriend:true withReason:nil andNewFriendsList:[results objectForKey:@"friends"]];        
         }else{
             [delegate didAcceptFriend:false withReason:[results objectForKey:@"reason"] andNewFriendsList:nil];        
+        }
+    }else if([[results objectForKey:@"action"] isEqualToString:@"notify"]){
+        [self updateLocalSessionKey:[results objectForKey:@"sessionKey"]];
+        if ([[results objectForKey:@"code"] isEqualToString:@"0"]){
+            [delegate didNotifyFriends:true
+                            withReason:nil
+                      deliveryAttempts:[[results objectForKey:@"attemptedDeliveries"] intValue]
+                     deliverySuccesses:[[results objectForKey:@"successfulDeliveries"] intValue]];        
+        }else{
+            [delegate didNotifyFriends:false
+                            withReason:[results objectForKey:@"reason"]
+                      deliveryAttempts:[[results objectForKey:@"attemptedDeliveries"] intValue]
+                     deliverySuccesses:[[results objectForKey:@"successfulDeliveries"] intValue]];      
         }
     }
     

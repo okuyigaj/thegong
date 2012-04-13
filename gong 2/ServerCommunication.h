@@ -19,6 +19,7 @@
 - (void)didAddFriend:(BOOL)_trueOrFalse withReason:(NSString *)_reason andNewFriendsList:(NSArray *)_friends;
 - (void)didDeleteFriend:(BOOL)_trueOrFalse withReason:(NSString *)_reason andNewFriendsList:(NSArray *)_friends;
 - (void)didAcceptFriend:(BOOL)_trueOrFalse withReason:(NSString *)_reason andNewFriendsList:(NSArray *)_friends;
+- (void)didNotifyFriends:(BOOL)_trueOrFalse withReason:(NSString *)_reason deliveryAttempts:(int)_attempts deliverySuccesses:(int)_successes;
 
 @end
 
@@ -44,5 +45,7 @@
 - (void)cancelCurrentTask;
 - (void)deleteFriendWithFriendshipId:(NSString *)friendship_id;
 - (void)acceptFriendWithFriendshipId:(NSString *)friendship_id;
+- (void)sendNotificationWithMessage:(NSString *)msg badge:(NSString *)_badge andSound:(NSString *)_sound;
+
 
 @end

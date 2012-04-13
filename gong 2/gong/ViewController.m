@@ -22,28 +22,18 @@
     // Release any cached data, images, etc that aren't in use.
 }
 
--(IBAction)registerDevice{
-    NSLog(@"Registering for push notifications...");
-    /// SHOULD BE DONE UPON STARTING
-    [[UIApplication sharedApplication] 
-     registerForRemoteNotificationTypes:
-     (UIRemoteNotificationTypeAlert | 
-      UIRemoteNotificationTypeBadge | 
-      UIRemoteNotificationTypeSound)];
-}
-
 ////////////// BUTTON FUNCTIONS
 
 -(IBAction)tryRegistration{
-    [sc registerWithUsername:@"jjpenney" email:@"james@jpenney.com" andPassword:@"password"];
+    [sc registerWithUsername:@"jjpenney" email:@"someone@jpenney.com" andPassword:@"password"];
 }
 
 -(IBAction)tryAuth{
-    [sc authoriseWithAuthToken:txtAuthToken.text forEmail:@"james@jpenney.com"];
+    [sc authoriseWithAuthToken:txtAuthToken.text forEmail:@"someone@jpenney.com"];
 }
 
 -(IBAction)attemptLogin{
-    [sc loginWithEmailAddress:@"james@jpenney.com" andPassword:@"password"];
+    [sc loginWithEmailAddress:@"someone@jpenney.com" andPassword:@"password"];
 }
 
 -(IBAction)getFriendsList{
@@ -62,6 +52,10 @@
 -(void)acceptFriendAtIndex:(NSIndexPath *)indexPath{
     NSDictionary *tempDict = [self.friends objectAtIndex:indexPath.row];
     [sc acceptFriendWithFriendshipId:[tempDict objectForKey:@"friendship_id"]];
+}
+
+-(IBAction)gongThoseBitches{
+    [sc sendNotificationWithMessage:@"hello, this is a message" badge:@"18" andSound:@"default"];
 }
 
 ///////////// END BUTTON FUNCTIONS
@@ -148,6 +142,14 @@
     }
 }
 
+- (void)didNotifyFriends:(BOOL)_trueOrFalse withReason:(NSString *)_reason deliveryAttempts:(int)_attempts deliverySuccesses:(int)_successes{
+    if (_trueOrFalse){
+        NSLog(@"Deliveries attempted: %d, Deliveries succeeded: %d",_attempts, _successes);
+    }else{
+        NSLog(@"Notify friends failed. Reason: %@",_reason);
+    }
+}
+
 
 ///////////// END DELEGATE METHODS
 
@@ -211,20 +213,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(displayDeviceToken:) 
-                                                 name:@"didReceiveDeviceToken"
-                                               object:nil];
     sc = [[ServerCommunication alloc] init];
     [sc setDelegate:self];
     friends = [[NSMutableArray alloc] init];
     
 	// Do any additional setup after loading the view, typically from a nib.
-}
-
--(void)displayDeviceToken:(NSNotification *)notification{
-    NSLog(@"displaying device token");
 }
 
 - (void)viewDidUnload
