@@ -20,7 +20,7 @@
 
 - (NSString *)initial {
   [self willAccessValueForKey:@"initial"];
-  NSString *_initial = [self.displayName substringToIndex:1];
+  NSString *_initial = [[self.displayName substringToIndex:1] uppercaseString];
   [self didAccessValueForKey:@"initial"];
   return _initial;
 }

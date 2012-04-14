@@ -21,7 +21,7 @@
                     </connections>
                 </navigationController>
             </objects>
-            <point key="canvasLocation" x="14" y="248"/>
+            <point key="canvasLocation" x="714" y="104"/>
         </scene>
         <!--Login Register View Controller-->
         <scene sceneID="TuH-1c-iQG">
@@ -165,7 +165,7 @@
                     </connections>
                 </viewController>
             </objects>
-            <point key="canvasLocation" x="548" y="264"/>
+            <point key="canvasLocation" x="1248" y="120"/>
         </scene>
         <!--Confirm Registration View Controller-->
         <scene sceneID="o0t-LT-95C">
@@ -258,7 +258,7 @@
                     </connections>
                 </viewController>
             </objects>
-            <point key="canvasLocation" x="1047" y="212"/>
+            <point key="canvasLocation" x="1747" y="68"/>
         </scene>
         <!--Main View Controller - Root View Controller-->
         <scene sceneID="gjO-XV-zXH">

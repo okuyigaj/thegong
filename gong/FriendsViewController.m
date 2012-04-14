@@ -82,6 +82,10 @@
   }
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    return [[[[self resultsControllerForTableView:tableView] sections] objectAtIndex:section] name];
+}
+
 - (NSFetchedResultsController *)resultsControllerForTableView:(UITableView *)tableView {
   if (tableView == self.friendsTableView) {
     return self.allFriendsResultsController;
@@ -193,7 +197,6 @@
     cell.buttonTitle = @"Cancel";
     break;
   }
-  
 }
 
 - (void)requestButtonPressedForFriendCell:(FriendCell *)cell {
@@ -274,6 +277,7 @@
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
     // The fetch controller is about to start sending change notifications, so prepare the table view for updates.
+    NSLog(@"Will Change Content");
     [[self tableViewForResultsController:controller] beginUpdates];
 }
 
@@ -326,9 +330,9 @@
  
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
     // The fetch controller has sent all current change notifications, so tell the table view to process all updates.
+    NSLog(@"Did Change Content");
     UITableView *tv = [self tableViewForResultsController:controller];
     [tv endUpdates];
-//    [tv reloadRowsAtIndexPaths:tv.indexPathsForVisibleRows withRowAnimation:UITableViewRowAnimationFade];
 }
 
 -(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -512,11 +516,12 @@
       break;
     } 
     
-    if (![context save:&error]) {NSLog(@"Error Saving Changes");}
-          
   }
+
   //NOW WE'RE DONE. UI SHOULD HAVE AUTOMAGICALLY BEEN UPDATED.
   dispatch_async(dispatch_get_main_queue(), ^{
+    NSError *error;
+    if (![context save:&error]) {NSLog(@"Error Saving Changes");}
     [self hideUpdatingFriends];
   });
 }
