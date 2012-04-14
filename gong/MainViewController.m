@@ -7,11 +7,13 @@
 //
 
 #import "MainViewController.h"
+#import "DataModel.h"
 
 @implementation MainViewController
 
 @synthesize isLoggedIn = __isLoggedIn;
 @synthesize logoutButton, friendsButton, gongButton;
+@synthesize serverComms = _serverComms;
 
 - (BOOL)isLoggedIn {
   return [[NSUserDefaults standardUserDefaults] boolForKey:@"GONG_IS_LOGGED_IN"];
@@ -26,7 +28,21 @@
   [self performSegueWithIdentifier:@"ShowLoginRegisterView" sender:self];
   [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"GONG_USER_ID"];
   [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"GONG_SESSION_KEY"];
+  [[DataModel sharedDataModel] resetStore];
 }
+
+- (IBAction)hitGong:(id)sender {
+  [self.serverComms sendNotificationWithMessage:@"Gong!" badge:@"18" andSound:@"default"];
+  //Play the sound here too.
+}
+
+- (void)didNotifyFriends:(BOOL)_trueOrFalse withReason:(NSString *)_reason deliveryAttempts:(int)_attempts deliverySuccesses:(int)_successes {
+  if (_trueOrFalse) {
+    NSLog(@"Success!");
+  } else {
+  }
+}
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -54,9 +70,9 @@
     [self performSegueWithIdentifier:@"ShowLoginRegisterView" sender:self];
   } else {
   }
+  self.serverComms = [[ServerCommunication alloc] init];
+  self.serverComms.delegate = self;
 }
-
-
 
 - (void)viewDidUnload
 {

@@ -80,6 +80,17 @@ static DataModel *_sharedDataModel;
     return _persistentStoreCoordinator;
 }
 
+- (void)resetStore {
+  //delete the store.
+  NSPersistentStore *store = [self.persistentStoreCoordinator.persistentStores objectAtIndex:0];
+  NSError *error;
+  NSURL *storeURL = store.URL;
+  [self.persistentStoreCoordinator removePersistentStore:store error:&error];
+  [[NSFileManager defaultManager] removeItemAtURL:storeURL error:&error];
+  _persistentStoreCoordinator = nil;
+}
+
+
 /**
  Returns the URL to the application's Documents directory.
  */

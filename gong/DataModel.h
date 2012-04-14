@@ -18,5 +18,6 @@
 
 + (DataModel *)sharedDataModel;
 - (NSManagedObjectContext *)createManagedObjectContext;
+- (void)resetStore;
 
 @end

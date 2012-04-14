@@ -103,7 +103,7 @@
               inManagedObjectContext:context];
     [fetchRequest setEntity:entity];
     NSSortDescriptor *sortDescriptor = nil;
-    sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"friendshipId" ascending:YES];
+    sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"displayName" ascending:YES];
     NSArray *sortDescriptors = nil;
     sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
     [fetchRequest setSortDescriptors:sortDescriptors];    
@@ -157,24 +157,25 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView {
-  int c = self.allFriendsResultsController.sections.count;
-  NSLog(@"Sections: %d", c);
+  int c = [self resultsControllerForTableView:tableView].sections.count;
   return c;
 }
 
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath {
   FriendCell *cell = nil;
   cell = [tableView dequeueReusableCellWithIdentifier:@"FriendCell"];
-  [self configureCell:cell atIndexPath:indexPath];
+  [self configureCell:cell forTableView:tableView atIndexPath:indexPath];
   return cell;
 }
 
-- (void)configureCell:(FriendCell*)cell atIndexPath:(NSIndexPath*)indexPath {
-  Friend *friend = [self.activeResultsController objectAtIndexPath:indexPath];
+- (void)configureCell:(FriendCell*)cell forTableView:(UITableView *)tableView atIndexPath:(NSIndexPath*)indexPath {
+  Friend *friend = [[self resultsControllerForTableView:tableView] objectAtIndexPath:indexPath];
   
   cell.friendName.text = friend.displayName;
   cell.friendEmailAddress.text = friend.emailAddress;
   cell.friendshipId = friend.friendshipId;
+  cell.relationship = friend.relationship.intValue;
+  cell.delegate = self;
   
   switch (friend.relationship.intValue) {
   case 0:
@@ -184,12 +185,12 @@
   case 1:
     //They want to be your friend
     cell.friendRequestButton.hidden = NO;
-    cell.friendRequestButton.titleLabel.text = @"Accept";
+    cell.buttonTitle = @"Accept";
     break;
   case 2:
     //You want to be their friend
     cell.friendRequestButton.hidden = NO;
-    cell.friendRequestButton.titleLabel.text = @"Cancel";
+    cell.buttonTitle = @"Cancel";
     break;
   }
   
@@ -197,6 +198,78 @@
 
 - (void)requestButtonPressedForFriendCell:(FriendCell *)cell {
   //Tell the server to update the friendship.
+  //get the Friend in questions
+  NSFetchRequest *fetchRequest = nil;
+  fetchRequest = [[NSFetchRequest alloc] init]; NSEntityDescription *entity = nil;
+  entity = [NSEntityDescription entityForName:@"Friend" inManagedObjectContext:self.managedObjectContext];
+  fetchRequest.entity = entity;
+  NSSortDescriptor *sortDescriptor = nil;
+  sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"friendshipId" ascending:YES];
+  NSArray *sortDescriptors = nil;
+  sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
+  fetchRequest.sortDescriptors = sortDescriptors;
+  fetchRequest.predicate = [NSPredicate predicateWithFormat:@"friendshipId = %@", cell.friendshipId];
+  
+  NSError *error;
+  NSArray *results;
+  if (!(results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error])) {
+    NSLog(@"Error finding friend.\nError: %@", error);
+    return;
+  }
+  
+  if (results.count == 1) {
+    Friend *f = [results objectAtIndex:0];
+    if (f.relationship.intValue == 1) {
+      //accept that shit
+      [self.serverComms acceptFriendWithFriendshipId:f.friendshipId];
+    } else {
+      //ditch the bitch.
+      [self.serverComms deleteFriendWithFriendshipId:f.friendshipId];
+    }
+    
+  } else {
+    //didnt find the mother.
+    NSLog(@"No Such Friend exists");
+    return;
+  }
+}
+
+- (void)didAcceptFriend:(BOOL)_trueOrFalse withReason:(NSString *)_reason andNewFriendsList:(NSArray *)_friends {
+  if (_trueOrFalse) {
+    NSManagedObjectContext *c = [[DataModel sharedDataModel] createManagedObjectContext];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                  selector:@selector(dataModelChanged:)
+                                  name:NSManagedObjectContextDidSaveNotification
+                                  object:c];
+
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+      [self updateFriends:_friends inContext:c];
+    });
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Success" message:@"Accepted Friend" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+    [av show];
+  } else {
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Error" message:_reason delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+    [av show];
+  }
+}
+
+- (void)didDeleteFriend:(BOOL)_trueOrFalse withReason:(NSString *)_reason andNewFriendsList:(NSArray *)_friends {
+  if (_trueOrFalse) {
+    NSManagedObjectContext *c = [[DataModel sharedDataModel] createManagedObjectContext];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                  selector:@selector(dataModelChanged:)
+                                  name:NSManagedObjectContextDidSaveNotification
+                                  object:c];
+
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+      [self updateFriends:_friends inContext:c];
+    });
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Success" message:@"Removed Friend" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+    [av show];
+  } else {
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Error" message:_reason delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+    [av show];
+  }
 }
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
@@ -211,18 +284,22 @@
     switch(type) {
  
         case NSFetchedResultsChangeInsert:
+            NSLog(@"Inserted Row at:%@", newIndexPath);
             [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
             break;
  
         case NSFetchedResultsChangeDelete:
+            NSLog(@"Deleted Row at:%@", indexPath);
             [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
             break;
  
         case NSFetchedResultsChangeUpdate:
-            [self configureCell:(FriendCell *)[tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
+            NSLog(@"Updated Row at:%@", indexPath);
+            [self configureCell:(FriendCell *)[tableView cellForRowAtIndexPath:indexPath] forTableView:tableView atIndexPath:indexPath];
             break;
  
         case NSFetchedResultsChangeMove:
+          NSLog(@"Moved Row from:%@ to:%@", indexPath, newIndexPath);
            [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
            [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
            break;
@@ -249,7 +326,29 @@
  
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
     // The fetch controller has sent all current change notifications, so tell the table view to process all updates.
-    [[self tableViewForResultsController:controller] endUpdates];
+    UITableView *tv = [self tableViewForResultsController:controller];
+    [tv endUpdates];
+//    [tv reloadRowsAtIndexPaths:tv.indexPathsForVisibleRows withRowAnimation:UITableViewRowAnimationFade];
+}
+
+-(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
+    if(editingStyle==UITableViewCellEditingStyleDelete){
+        FriendCell *cell = (FriendCell *)[tableView cellForRowAtIndexPath:indexPath];
+        [self requestButtonPressedForFriendCell:cell];
+    }
+}
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath 
+{
+  if (tableView == self.requestsTableView) return NO;
+  
+  FriendCell *cell = (FriendCell *)[tableView cellForRowAtIndexPath:indexPath];
+  if (cell.relationship == 0) {
+    return YES;
+  } else {
+    return NO;
+  }
+  
 }
 
 #pragma mark - View lifecycle
@@ -342,10 +441,25 @@
   NSDictionary *newFriend;
   NSComparisonResult comparisonResult = NSOrderedSame;
   
-  while (i < friends.count || j < oldFriends.count) {
+  //sort the one fromt the server
+  NSArray *sortedFriends = [friends sortedArrayUsingComparator:^(id a, id b) {
+    NSString *id1 = [a objectForKey:@"friendship_id"];
+    NSString *id2 = [b objectForKey:@"friendship_id"];
+    return [id1 compare:id2];
+  }];
+  
+  for (NSDictionary *d in sortedFriends) {
+    NSLog(@"------");
+    for (NSString *key in d.allKeys) {
+      NSLog(@"%@ : %@", key, [d objectForKey:key]);
+    }
+  }
+  
+  
+  while (i < sortedFriends.count || j < oldFriends.count) {
 
-    if (i < friends.count) {
-      newFriend = [friends objectAtIndex:i];
+    if (i < sortedFriends.count) {
+      newFriend = [sortedFriends objectAtIndex:i];
     } else {
       comparisonResult = NSOrderedDescending;
     }
@@ -356,7 +470,7 @@
       comparisonResult = NSOrderedAscending;
     }
     
-    if (i < friends.count && j < oldFriends.count) {
+    if (i < sortedFriends.count && j < oldFriends.count) {
       comparisonResult = [[newFriend objectForKey:@"friendship_id"] compare:oldFriend.friendshipId options:0];
     }
 
@@ -378,15 +492,12 @@
           f.relationship = [NSNumber numberWithInt:1];
         }
       }
-      if (![context save:&error]) {NSLog(@"Error Inserting Friend:%@", f.displayName);}
       NSLog(@"Inserted new Friend:%@", f.displayName);
       i = i + 1;
       break;
     case NSOrderedDescending:
-      //DELETE OLD FRIEND
       [context deleteObject:oldFriend];
-      if (![context save:&error]) {NSLog(@"Error Deleting Friend:%@", oldFriend.displayName);}
-      NSLog(@"Deleted Old Friend:%@", oldFriend.displayName);
+      NSLog(@"Deleted Old Friend");
       j = j + 1;
       break;
     case NSOrderedSame:
@@ -396,11 +507,12 @@
       if ([[newFriend objectForKey:@"verified"] isEqualToString:@"yes"]) {
         oldFriend.relationship = [NSNumber numberWithInt:0];
       }
-      if (![context save:&error]) {NSLog(@"Error Updating Friend:%@", oldFriend.displayName);}
       NSLog(@"Updated Existing Friend:%@", oldFriend.displayName);
       j = j + 1; i = i + 1;
       break;
     } 
+    
+    if (![context save:&error]) {NSLog(@"Error Saving Changes");}
           
   }
   //NOW WE'RE DONE. UI SHOULD HAVE AUTOMAGICALLY BEEN UPDATED.

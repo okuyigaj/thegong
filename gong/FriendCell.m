@@ -10,7 +10,20 @@
 
 @implementation FriendCell
 
-@synthesize friendRequestButton, friendEmailAddress, friendName, friendshipId, delegate;
+@synthesize friendRequestButton, friendEmailAddress, friendName, buttonTitle = _buttonTitle, friendshipId, delegate, relationship;
+
+
+- (void)setButtonTitle:(NSString *)buttonTitle {
+  _buttonTitle = buttonTitle;
+  
+  [self.friendRequestButton setTitle:buttonTitle forState: UIControlStateNormal];
+  [self.friendRequestButton setTitle:buttonTitle forState: UIControlStateApplication];
+  [self.friendRequestButton setTitle:buttonTitle forState: UIControlStateHighlighted];
+  [self.friendRequestButton setTitle:buttonTitle forState: UIControlStateReserved];
+  [self.friendRequestButton setTitle:buttonTitle forState: UIControlStateSelected];
+  [self.friendRequestButton setTitle:buttonTitle forState: UIControlStateDisabled];
+}
+
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
