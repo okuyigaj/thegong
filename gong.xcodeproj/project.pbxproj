@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1D48D2331545B78900D1188C /* gong.caf in Resources */ = {isa = PBXBuildFile; fileRef = 1D48D22A1545AB6500D1188C /* gong.caf */; };
+		1D48D23D1546B7BA00D1188C /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D48D23B1546B7B300D1188C /* AudioToolbox.framework */; };
+		1D7CC9421546BD470093331A /* gong.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D7CC9411546BD470093331A /* gong.png */; };
 		C90B748A15323470005C7E56 /* NSObject+SBJson.m in Sources */ = {isa = PBXBuildFile; fileRef = C90B747215323470005C7E56 /* NSObject+SBJson.m */; };
 		C90B748B15323470005C7E56 /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = C90B747515323470005C7E56 /* SBJsonParser.m */; };
 		C90B748C15323470005C7E56 /* SBJsonStreamParser.m in Sources */ = {isa = PBXBuildFile; fileRef = C90B747715323470005C7E56 /* SBJsonStreamParser.m */; };
@@ -42,6 +45,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1D48D22A1545AB6500D1188C /* gong.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = gong.caf; path = sounds/gong.caf; sourceTree = "<group>"; };
+		1D48D23B1546B7B300D1188C /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		1D7CC9411546BD470093331A /* gong.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gong.png; sourceTree = "<group>"; };
 		C90B747115323470005C7E56 /* NSObject+SBJson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+SBJson.h"; sourceTree = "<group>"; };
 		C90B747215323470005C7E56 /* NSObject+SBJson.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+SBJson.m"; sourceTree = "<group>"; };
 		C90B747315323470005C7E56 /* SBJson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJson.h; sourceTree = "<group>"; };
@@ -109,6 +115,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1D48D23D1546B7BA00D1188C /* AudioToolbox.framework in Frameworks */,
 				C9F8EEA815335BD900EAE719 /* CoreData.framework in Frameworks */,
 				C9E3A18715309B12001F9483 /* UIKit.framework in Frameworks */,
 				C9E3A18915309B12001F9483 /* Foundation.framework in Frameworks */,
@@ -119,6 +126,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1D48D2291545AA6A00D1188C /* sounds */ = {
+			isa = PBXGroup;
+			children = (
+				1D48D22A1545AB6500D1188C /* gong.caf */,
+			);
+			name = sounds;
+			sourceTree = "<group>";
+		};
+		1D7CC9401546BD470093331A /* images */ = {
+			isa = PBXGroup;
+			children = (
+				1D7CC9411546BD470093331A /* gong.png */,
+			);
+			path = images;
+			sourceTree = "<group>";
+		};
 		C96263321534783F005652C0 /* DataModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -192,6 +215,7 @@
 		C9E3A18515309B12001F9483 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1D48D23B1546B7B300D1188C /* AudioToolbox.framework */,
 				C9F8EEA715335BD900EAE719 /* CoreData.framework */,
 				C9E3A18615309B12001F9483 /* UIKit.framework */,
 				C9E3A18815309B12001F9483 /* Foundation.framework */,
@@ -223,6 +247,8 @@
 		C9E3A18D15309B12001F9483 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				1D7CC9401546BD470093331A /* images */,
+				1D48D2291545AA6A00D1188C /* sounds */,
 				C9E3A18E15309B12001F9483 /* gong-Info.plist */,
 				C9E3A18F15309B12001F9483 /* InfoPlist.strings */,
 				C9E3A19215309B12001F9483 /* main.m */,
@@ -341,7 +367,9 @@
 			files = (
 				C9E3A19115309B12001F9483 /* InfoPlist.strings in Resources */,
 				C9E3A19A15309B12001F9483 /* MainStoryboard.storyboard in Resources */,
+				1D48D2331545B78900D1188C /* gong.caf in Resources */,
 				C9F8EEA31533322F00EAE719 /* LoadingView.xib in Resources */,
+				1D7CC9421546BD470093331A /* gong.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

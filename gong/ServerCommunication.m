@@ -324,6 +324,19 @@
     NSDictionary *results = [self.responseString JSONValue];
     
     NSLog(@"responseString = %@",self.responseString);
+
+    if([[results objectForKey:@"code"] isEqualToString:@"666"]) {
+        [[NSNotificationCenter defaultCenter] 
+         postNotificationName:@"logUserOut" 
+         object:self];
+        UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"Error"
+                                                      message:[results objectForKey:@"reason"]
+                                                     delegate:nil
+                                            cancelButtonTitle:@"OK"
+                                            otherButtonTitles: nil];
+        [alert show];
+        return;
+    }
     
     if([[results objectForKey:@"action"] isEqualToString:@"register"]) {
         if ([[results objectForKey:@"code"] isEqualToString:@"1"]) {

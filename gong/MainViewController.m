@@ -32,8 +32,10 @@
 }
 
 - (IBAction)hitGong:(id)sender {
-  [self.serverComms sendNotificationWithMessage:@"Gong!" badge:@"18" andSound:@"default"];
-  //Play the sound here too.
+    [self.serverComms sendNotificationWithMessage:@"Gong!" badge:@"18" andSound:@"gong.caf"];
+  
+    //Play the sound here too.
+    AudioServicesPlaySystemSound(_gongSound);
 }
 
 - (void)didNotifyFriends:(BOOL)_trueOrFalse withReason:(NSString *)_reason deliveryAttempts:(int)_attempts deliverySuccesses:(int)_successes {
@@ -74,9 +76,23 @@
   self.serverComms.delegate = self;
 }
 
+- (void)viewDidLoad{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(logout) 
+                                                 name:@"logUserOut"
+                                               object:nil];
+    
+    NSString *gongPath = [[NSBundle mainBundle] pathForResource:@"gong" ofType:@"caf"];
+	NSURL *gongURL = [NSURL fileURLWithPath:gongPath];
+    AudioServicesCreateSystemSoundID( (CFURLRef)objc_unretainedPointer(gongURL), &_gongSound);
+}
+
 - (void)viewDidUnload
 {
     [super viewDidUnload];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:@"logUserOut"
+                                                  object:nil];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
 }

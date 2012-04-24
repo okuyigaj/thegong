@@ -8,8 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "ServerCommunication.h"
+#import <AudioToolbox/AudioToolbox.h>
 
-@interface MainViewController : UIViewController <ServerCommunicationDelegate>
+@interface MainViewController : UIViewController <ServerCommunicationDelegate>{
+    SystemSoundID _gongSound;
+}
 
 @property (nonatomic, assign) BOOL isLoggedIn;
 

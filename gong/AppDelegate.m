@@ -46,8 +46,7 @@
  
     for (id key in userInfo) {
         NSLog(@"key: %@, value: %@", key, [userInfo objectForKey:key]);
-    }    
- 
+    }
 }
 							
 - (void)applicationWillResignActive:(UIApplication *)application
