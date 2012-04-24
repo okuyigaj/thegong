@@ -20,6 +20,7 @@
 - (void)didDeleteFriend:(BOOL)_trueOrFalse withReason:(NSString *)_reason andNewFriendsList:(NSArray *)_friends;
 - (void)didAcceptFriend:(BOOL)_trueOrFalse withReason:(NSString *)_reason andNewFriendsList:(NSArray *)_friends;
 - (void)didNotifyFriends:(BOOL)_trueOrFalse withReason:(NSString *)_reason deliveryAttempts:(int)_attempts deliverySuccesses:(int)_successes;
+- (void)didResendAuthToken:(BOOL)_trueOrFalse withReason:(NSString *)_reason;
 
 
 @end
@@ -47,6 +48,7 @@
 - (void)deleteFriendWithFriendshipId:(NSString *)friendship_id;
 - (void)acceptFriendWithFriendshipId:(NSString *)friendship_id;
 - (void)sendNotificationWithMessage:(NSString *)msg badge:(NSString *)_badge andSound:(NSString *)_sound;
+- (void)resendAuthTokenToEmail:(NSString *)email;
 
 
 @end

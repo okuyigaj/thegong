@@ -81,6 +81,30 @@
     self.connection = [[NSURLConnection alloc] initWithRequest:postRequest delegate:self];
 }
 
+-(void)resendAuthTokenToEmail:(NSString *)email{
+    if(self.connectionIsBusy){
+        [delegate didResendAuthToken:false withReason:@"Connection is busy"];
+        return;
+    }
+    
+    self.action = @"auth";
+    self.connectionIsBusy = YES;
+    
+    NSString *post = [NSString stringWithFormat:@"action=resendAuth&email=%@",
+                      email];
+    
+    NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+    NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
+    NSMutableURLRequest *postRequest = [[NSMutableURLRequest alloc] init];
+    [postRequest setURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@action.php",self.siteURL]]];
+    [postRequest setHTTPMethod:@"POST"];
+    [postRequest setValue:postLength forHTTPHeaderField:@"Content-Length"];
+    [postRequest setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+    [postRequest setHTTPBody:postData];
+    
+    self.connection = [[NSURLConnection alloc] initWithRequest:postRequest delegate:self];
+}
+
 -(void)authoriseWithAuthToken:(NSString *)token forEmail:(NSString *)email{
     if(self.connectionIsBusy){
         [delegate authorisationWasSuccessful:false withReason:@"Connection is busy"];
@@ -293,6 +317,8 @@
         [self.delegate registrationWasSuccessful:false withReason:@"Connection to server failed"];
     }else if([self.action isEqualToString:@"auth"]){
         [self.delegate authorisationWasSuccessful:false withReason:@"Connection to server failed"];        
+    }else if([self.action isEqualToString:@"resendAuth"]){
+        [self.delegate didResendAuthToken:false withReason:@"Connection to server failed"];        
     }else if([action isEqualToString:@"login"]){
         [delegate loginWasSuccessful:false withReason:@"Connection to server failed"];        
     }else if([action isEqualToString:@"getFriends"]){
@@ -349,6 +375,12 @@
             [self.delegate authorisationWasSuccessful:false withReason:[results objectForKey:@"reason"]];
         } else {
             [self.delegate authorisationWasSuccessful:true withReason:@""];
+        }
+    }else if([[results objectForKey:@"action"] isEqualToString:@"resendAuth"]) {
+        if ([[results objectForKey:@"code"] isEqualToString:@"1"]) {
+            [self.delegate didResendAuthToken:false withReason:[results objectForKey:@"reason"]];
+        } else {
+            [self.delegate didResendAuthToken:true withReason:nil];
         }
     }else if([[results objectForKey:@"action"] isEqualToString:@"login"]){
         if ([[results objectForKey:@"code"] isEqualToString:@"0"]){

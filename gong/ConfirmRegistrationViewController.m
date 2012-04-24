@@ -47,6 +47,14 @@
 }
 
 - (IBAction)resendCode {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    self.serverComms = [[ServerCommunication alloc] init];
+    self.serverComms.delegate = self;
+    [self.serverComms resendAuthTokenToEmail:[userDefaults objectForKey:@"GONG_REGISTER_EMAIL"]];
+    [self.activationCodeTextField resignFirstResponder];
+    self.loadingView.loadingMessage = @"Resending";
+    [self.loadingView showAnimated:YES];
+    
 }
 
 - (IBAction)backToRegistration {
@@ -69,6 +77,25 @@
     [av show];
   }
 }
+
+
+- (void)didResendAuthToken:(BOOL)_trueOrFalse withReason:(NSString *)_reason{
+    if(_trueOrFalse){
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Success!"
+                                                        message:@"Your authorisation token was successfully resent"
+                                                       delegate:nil cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+    }else{
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error!"
+                                                        message:_reason
+                                                       delegate:nil cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+    }
+    [self.loadingView hideAnimated:YES];
+}
+
 
 - (void)loginWasSuccessful:(BOOL)_trueOrFalse withReason:(NSString *)_reason {
   if (_trueOrFalse) {
